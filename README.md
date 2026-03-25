@@ -1,2 +1,2 @@
-# PixelBound
+# pixelbound
 Story creator app 
