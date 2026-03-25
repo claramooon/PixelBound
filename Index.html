@@ -9,11 +9,13 @@
   <title>PixelBound — Craft Your Magical Story</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>body{margin:0;padding:0;background:#0d0a1a}</style>
 </head>
 <body>
   <div id="root"></div>
+  <div id="error" style="color:#ff6b6b;padding:20px;font-family:monospace;font-size:12px;display:none"></div>
+  <script>window.onerror=function(m,s,l,c,e){var d=document.getElementById("error");if(d){d.style.display="block";d.textContent="Error: "+m+" (line "+l+")"}}</script>
   <script type="text/babel">
     const { useState, useEffect } = React;
 
@@ -375,7 +377,7 @@ try {
 // List ALL keys, no prefix, to see everything in storage
 const _ks=Object.keys(localStorage).filter(k=>k.startsWith(“pbstory:”)); const res={keys:_ks};
 setDebugInfo(“All storage keys: “ + JSON.stringify(res));
-if (!res?.keys?.length){ setStorageStories([]); return; }
+if (!res && res.keys && res.keys.length){ setStorageStories([]); return; }
 const pbKeys = res.keys;
 if (!pbKeys.length){ setStorageStories([]); return; }
 const all = await Promise.all(pbKeys.map(async k=>{
@@ -390,7 +392,7 @@ return {_key:k,…d};
 }catch{ return null; }
 }));
 setStorageStories(all.filter(Boolean));
-} catch(err) { setStorageStories([]); setDebugInfo(“List error: “+String(err?.message||err)); }
+} catch(err) { setStorageStories([]); setDebugInfo(“List error: “+String(err && err.message ? err.message : err)); }
 }
 
 // Merge session stories + storage stories, dedupe by createdAt, sort newest first
@@ -432,7 +434,7 @@ return (
 <div className="shelf">
 {stories.map(s=>(
 <div className=“scard” key={s._key||s.createdAt} onClick={()=>onRead(s)}>
-<img src={(s.selectedImages||[]).find(i=>i.id===s.coverImageId)?.src || (s.selectedImages||[])[0]?.src} alt=”” className=“scard-thumb” />
+<img src={((s.selectedImages||[]).find(i=>i.id===s.coverImageId) || (s.selectedImages||[])[0] || {}).src} alt=”” className=“scard-thumb” />
 <div className="scard-body">
 <div className="scard-title">{s.storyTitle||“Untitled Story”}</div>
 <div className="scard-author">{s.authorName?`by ${s.authorName}`:<em>Anonymous</em>}</div>
