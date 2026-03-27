@@ -20,9 +20,21 @@ jobs:
         with:
           node-version: 20
 
-      - name: Fix smart quotes
+      - name: Fix smart punctuation
         run: |
-          find src -name "*.jsx" -exec sed -i 's/\xe2\x80\x9c/"/g; s/\xe2\x80\x9d/"/g; s/\xe2\x80\x98/'"'"'/g; s/\xe2\x80\x99/'"'"'/g' {} \;
+          python3 -c "
+          import os, re
+          for root, dirs, files in os.walk('src'):
+              for f in files:
+                  if f.endswith('.jsx'):
+                      path = os.path.join(root, f)
+                      t = open(path).read()
+                      t = t.replace('\u201c','\"').replace('\u201d','\"')
+                      t = t.replace('\u2018',\"'\").replace('\u2019',\"'\")
+                      t = t.replace('\u2026','...').replace('\u2013','-').replace('\u2014','--')
+                      open(path,'w').write(t)
+                      print('Fixed:', path)
+          "
 
       - name: Install dependencies
         run: npm install
@@ -36,4 +48,4 @@ jobs:
           path: dist
 
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v4​​​​​​​​​​​​​​​​
