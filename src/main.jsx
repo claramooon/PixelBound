@@ -4,12 +4,12 @@ import { createRoot } from “react-dom/client”;
 const STORY_IMAGES = [
 { id: 1, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5543_eu8l5t.jpg”, label: “Enchanted Castle”, emoji: “🏰” },
 { id: 2, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5535_bmsywi.jpg”, label: “Magical Forest”, emoji: “🌲” },
-{ id: 3, src: “https://picsum.photos/seed/volcano3/400/300”, label: “Dragon’s Lair”, emoji: “🐉” },
-{ id: 4, src: “https://picsum.photos/seed/ocean4/400/300”, label: “Mystical Ocean”, emoji: “🌊” },
-{ id: 5, src: “https://picsum.photos/seed/galaxy5/400/300”, label: “Star Kingdom”, emoji: “⭐” },
-{ id: 6, src: “https://picsum.photos/seed/tower6/400/300”, label: “Wizard’s Tower”, emoji: “🧙” },
-{ id: 7, src: “https://picsum.photos/seed/cave7/400/300”, label: “Hidden Treasure”, emoji: “💎” },
-{ id: 8, src: “https://picsum.photos/seed/meadow8/400/300”, label: “Unicorn Valley”, emoji: “🦄” },
+{ id: 3, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5542_fgxkol.jpg”, label: “Dragon’s Lair”, emoji: “🐉” },
+{ id: 4, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5535_wyrzpv.jpg”, label: “Mystical Ocean”, emoji: “🌊” },
+{ id: 5, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5535_qen9mg.jpg”, label: “Star Kingdom”, emoji: “⭐” },
+{ id: 6, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5535_ijxzjj.jpg”, label: “Wizard’s Tower”, emoji: “🧙” },
+{ id: 7, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5535_bavg9p.jpg”, label: “Hidden Treasure”, emoji: “💎” },
+{ id: 8, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5535_sv3wj1.jpg”, label: “Unicorn Valley”, emoji: “🦄” },
 ];
 
 const DEMO = {
