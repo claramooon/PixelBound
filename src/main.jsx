@@ -196,7 +196,7 @@ const CSS = `
 /* ── iPAD LANDSCAPE reader — side by side ── */
 @media(min-width:768px) and (orientation:landscape){
 .fb-page{flex-direction:row}
-.fb-img{width:45%;flex:none;height:100%}
+.fb-img{width:100%;height:280px;flex:none;object-fit:cover;display:block}
 .fb-text-area{flex:1;padding:36px 40px}
 .fb-story-text{font-size:19px}
 }
