@@ -607,7 +607,8 @@ return (
 ?<button className=“pbh-action” onClick={()=>setView(“home”)}>← Library</button>
 :<div style={{minWidth:90}}/>}
 <div className="pbh-logo">
-<img src=“https://res.cloudinary.com/donmltebd/image/upload/v1774344846/IMG_5534_aadazm.png” alt=“PixelBound” style={{height:70,objectFit:“contain”,filter:“drop-shadow(0 0 14px rgba(212,175,55,.4))”}}/>
+<img src=“https://res.cloudinary.com/donmltebd/image/upload/v1774344846/IMG_5534_aadazm.png” alt=“PixelBound” style={{width:"100%",maxWidth:320,height:"auto",objectFit:"contain",
+,filter:“drop-shadow(0 0 14px rgba(212,175,55,.4))”}}/>
 <div className="pbh-sub">Craft Your Magical Story</div>
 </div>
 <div style={{minWidth:90}}/>
