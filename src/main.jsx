@@ -187,7 +187,7 @@ const CSS = `
 .scard-thumb{width:130px;min-width:130px}
 .scard-title{font-size:15px}
 .hero-btn{padding:20px 52px;font-size:14px}
-.fb-img{flex:0 0 55%}
+.fb-img{height:200px;flex:none}
 .fb-story-text{font-size:18px}
 .pbpages{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .pbcard{padding:44px}
@@ -196,7 +196,7 @@ const CSS = `
 /* ── iPAD LANDSCAPE reader — side by side ── */
 @media(min-width:768px) and (orientation:landscape){
 .fb-page{flex-direction:row}
-.fb-img{width:100%;height:280px;flex:none;object-fit:cover;display:block}
+.fb-img{width:100%;height:200px;flex:none;object-fit:cover;display:block}
 .fb-text-area{flex:1;padding:36px 40px}
 .fb-story-text{font-size:19px}
 }
@@ -212,7 +212,7 @@ const CSS = `
 .fb-story-text{font-size:15px}
 .fb-cover-title{font-size:26px}
 .fb-nav-btn{width:52px;height:52px;font-size:26px}
-.fb-img{flex:0 0 46%}
+.fb-img{height:220px;flex:none}
 .hero{padding:40px 16px 36px}
 .hero-title{font-size:42px}
 .pbm{padding:12px 16px 40px}
