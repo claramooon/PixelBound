@@ -3,7 +3,7 @@ import { createRoot } from “react-dom/client”;
 
 const STORY_IMAGES = [
 { id: 1, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5543_eu8l5t.jpg”, label: “Enchanted Castle”, emoji: “🏰” },
-{ id: 2, src: “https://picsum.photos/seed/forest2/400/300”, label: “Magical Forest”, emoji: “🌲” },
+{ id: 2, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5535_bmsywi.jpg”, label: “Magical Forest”, emoji: “🌲” },
 { id: 3, src: “https://picsum.photos/seed/volcano3/400/300”, label: “Dragon’s Lair”, emoji: “🐉” },
 { id: 4, src: “https://picsum.photos/seed/ocean4/400/300”, label: “Mystical Ocean”, emoji: “🌊” },
 { id: 5, src: “https://picsum.photos/seed/galaxy5/400/300”, label: “Star Kingdom”, emoji: “⭐” },
