@@ -1,7 +1,7 @@
 import { useState, useEffect } from “react”;
 import { createRoot } from “react-dom/client”;
 
-const CLOUDINARY_BASE = "https://res.cloudinary.com/donmltebd/image/upload/f_auto";
+const CLOUDINARY_BASE = "https://res.cloudinary.com/donmltebd/image/upload";
 
 function getWeekFolder() {
   const now = new Date();
@@ -13,7 +13,7 @@ function getWeekFolder() {
 const WEEK_FOLDER = getWeekFolder();
 
 const STORY_IMAGES = [
-  { id: 1, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image1`, label: "Scene 1", emoji: "✨" },
+  { id: 1, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image1.png`, label: "Scene 1", emoji: "✨" },
   { id: 2, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image2`, label: "Scene 2", emoji: "✨" },
   { id: 3, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image3`, label: "Scene 3", emoji: "✨" },
   { id: 4, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image4`, label: "Scene 4", emoji: "✨" },
