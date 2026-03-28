@@ -165,7 +165,7 @@ const CSS = `
 .fb-text-area{flex:1;display:flex;flex-direction:column;padding:24px 28px 16px;background:linear-gradient(to bottom,#1a1230 0%,#100d22 100%);overflow-y:auto;position:relative;min-height:0}
 .fb-text-area::before{content:’’;position:absolute;top:0;left:28px;right:28px;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.2),transparent)}
 .fb-scene-label{font-family:‘Cinzel’,serif;font-size:10px;letter-spacing:3px;color:rgba(212,175,55,.45);text-transform:uppercase;margin-bottom:14px}
-.fb-story-text{font-family:‘Lora’,serif;font-size:clamp(15px,2.2vw,19px);line-height:1.85;color:#e8d5b7;font-style:italic;flex:1;overflow-y:auto}
+.fb-story-text{font-family:‘Lora’,serif;font-size:clamp(15px,2.2vw,19px);line-height:1.85;color:#e8d5b7;font-style:italic;flex:1;overflow-y:auto;white-space:pre-wrap;}
 .fb-story-text::-webkit-scrollbar{width:3px}
 .fb-story-text::-webkit-scrollbar-thumb{background:rgba(212,175,55,.2);border-radius:2px}
 .fb-empty-text{color:rgba(232,213,183,.25);font-style:italic}
