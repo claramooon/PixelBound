@@ -159,9 +159,9 @@ const CSS = `
 .fb-cover-hint{font-family:‘Cinzel’,serif;font-size:10px;letter-spacing:3px;color:rgba(212,175,55,.3);text-transform:uppercase;animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:.3}50%{opacity:.8}}
 .fb-end-page{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:linear-gradient(160deg,#180d30,#06040f)}
-.fb-end-ornament{font-size:32px;color:rgba(212,175,55,.3)}
-.fb-end-word{font-family:‘Cinzel’,serif;font-size:28px;color:rgba(212,175,55,.5);letter-spacing:8px}
-.fb-end-sub{font-family:‘Cinzel’,serif;font-size:10px;letter-spacing:4px;color:rgba(212,175,55,.2);text-transform:uppercase}
+.fb-end-ornament{font-size:48px;color:rgba(212,175,55,.8)}
+.fb-end-word{font-family:‘Cinzel’,serif;font-size:42px;color:#d4af37;text-shadow:0 0 30px rgba(212,175,55,.4);letter-spacing:8px}
+.fb-end-sub{font-family:‘Cinzel’,serif;font-size:13px;color:rgba(212,175,55,.7);text-transform:uppercase}
 .fb-text-area{flex:1;display:flex;flex-direction:column;padding:24px 28px 16px;background:linear-gradient(to bottom,#1a1230 0%,#100d22 100%);overflow-y:auto;position:relative;min-height:0}
 .fb-text-area::before{content:’’;position:absolute;top:0;left:28px;right:28px;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.2),transparent)}
 .fb-scene-label{font-family:‘Cinzel’,serif;font-size:10px;letter-spacing:3px;color:rgba(212,175,55,.45);text-transform:uppercase;margin-bottom:14px}
