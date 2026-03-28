@@ -11,6 +11,8 @@ function getWeekFolder() {
 }
 
 const WEEK_FOLDER = getWeekFolder();
+document.title = "PixelBound - " + WEEK_FOLDER;
+
 
 const STORY_IMAGES = [
   { id: 1, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image1.png`, label: "Scene 1", emoji: "✨" },
