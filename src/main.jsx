@@ -150,7 +150,7 @@ const CSS = `
 .fb-page.slide-in{transform:translateX(0);transition:transform 0.45s cubic-bezier(0.4,0,0.2,1)}
 .fb-page.slide-out-left{transform:translateX(-100%);transition:transform 0.45s cubic-bezier(0.4,0,0.2,1)}
 .fb-page.slide-out-right{transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.4,0,0.2,1)}
-.fb-img{width:100%;flex:0 0 42%;object-fit:cover;display:block;min-height:0}
+.fb-img{width:100%;flex:0 0 42%;object-fit:contain;display:block;min-height:0;background:#06040f}
 .fb-cover-page{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center;background:linear-gradient(160deg,#2d1b69 0%,#0d0a1a 65%,#1a0d2e 100%)}
 .fb-cover-icon{font-size:48px;margin-bottom:20px;filter:drop-shadow(0 0 16px rgba(212,175,55,.4))}
 .fb-cover-title{font-family:‘Cinzel’,serif;font-size:clamp(22px,5vw,42px);font-weight:700;color:#d4af37;text-shadow:0 0 30px rgba(212,175,55,.35);line-height:1.2;margin-bottom:14px}
