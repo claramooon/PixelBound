@@ -1,15 +1,26 @@
 import { useState, useEffect } from “react”;
 import { createRoot } from “react-dom/client”;
 
+const CLOUDINARY_BASE = "https://res.cloudinary.com/donmltebd/image/upload";
+
+function getWeekFolder() {
+  const now = new Date();
+  const startOfYear = new Date(now.getFullYear(), 0, 1);
+  const week = Math.ceil(((now - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
+  return `${now.getFullYear()}W${week}`;
+}
+
+const WEEK_FOLDER = getWeekFolder();
+
 const STORY_IMAGES = [
-{ id: 1, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5543_eu8l5t.jpg”, label: “Enchanted Castle”, emoji: “🏰” },
-{ id: 2, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5535_bmsywi.jpg”, label: “Magical Forest”, emoji: “🌲” },
-{ id: 3, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5542_fgxkol.jpg”, label: “Dragon’s Lair”, emoji: “🐉” },
-{ id: 4, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5535_wyrzpv.jpg”, label: “Mystical Ocean”, emoji: “🌊” },
-{ id: 5, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5535_qen9mg.jpg”, label: “Star Kingdom”, emoji: “⭐” },
-{ id: 6, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5535_ijxzjj.jpg”, label: “Wizard’s Tower”, emoji: “🧙” },
-{ id: 7, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5535_bavg9p.jpg”, label: “Hidden Treasure”, emoji: “💎” },
-{ id: 8, src: “https://res.cloudinary.com/donmltebd/image/upload/v1774635233/IMG_5535_sv3wj1.jpg”, label: “Unicorn Valley”, emoji: “🦄” },
+  { id: 1, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/Marsh1.jpg`, label: "Scene 1", emoji: "✨" },
+  { id: 2, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/Marsh2.jpg`, label: "Scene 2", emoji: "✨" },
+  { id: 3, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/Marsh3.jpg`, label: "Scene 3", emoji: "✨" },
+  { id: 4, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/Marsh4.jpg`, label: "Scene 4", emoji: "✨" },
+  { id: 5, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/Marsh5.jpg`, label: "Scene 5", emoji: "✨" },
+  { id: 6, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/Marsh6.jpg`, label: "Scene 6", emoji: "✨" },
+  { id: 7, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/Marsh7.jpg`, label: "Scene 7", emoji: "✨" },
+  { id: 8, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/Marsh8.jpg`, label: "Scene 8", emoji: "✨" },
 ];
 
 const DEMO = {
