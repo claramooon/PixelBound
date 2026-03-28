@@ -150,7 +150,7 @@ const CSS = `
 .fb-page.slide-in{transform:translateX(0);transition:transform 0.45s cubic-bezier(0.4,0,0.2,1)}
 .fb-page.slide-out-left{transform:translateX(-100%);transition:transform 0.45s cubic-bezier(0.4,0,0.2,1)}
 .fb-page.slide-out-right{transform:translateX(100%);transition:transform 0.45s cubic-bezier(0.4,0,0.2,1)}
-.fb-img{width:100%;flex:0 0 52%;object-fit:cover;display:block}
+.fb-img{width:100%;flex:0 0 42%;object-fit:cover;display:block;min-height:0}
 .fb-cover-page{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center;background:linear-gradient(160deg,#2d1b69 0%,#0d0a1a 65%,#1a0d2e 100%)}
 .fb-cover-icon{font-size:48px;margin-bottom:20px;filter:drop-shadow(0 0 16px rgba(212,175,55,.4))}
 .fb-cover-title{font-family:‘Cinzel’,serif;font-size:clamp(22px,5vw,42px);font-weight:700;color:#d4af37;text-shadow:0 0 30px rgba(212,175,55,.35);line-height:1.2;margin-bottom:14px}
@@ -162,7 +162,7 @@ const CSS = `
 .fb-end-ornament{font-size:32px;color:rgba(212,175,55,.3)}
 .fb-end-word{font-family:‘Cinzel’,serif;font-size:28px;color:rgba(212,175,55,.5);letter-spacing:8px}
 .fb-end-sub{font-family:‘Cinzel’,serif;font-size:10px;letter-spacing:4px;color:rgba(212,175,55,.2);text-transform:uppercase}
-.fb-text-area{flex:1;display:flex;flex-direction:column;padding:24px 28px 16px;background:linear-gradient(to bottom,#1a1230 0%,#100d22 100%);overflow:hidden;position:relative}
+.fb-text-area{flex:1;display:flex;flex-direction:column;padding:24px 28px 16px;background:linear-gradient(to bottom,#1a1230 0%,#100d22 100%);overflow-y:auto;position:relative;min-height:0}
 .fb-text-area::before{content:’’;position:absolute;top:0;left:28px;right:28px;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.2),transparent)}
 .fb-scene-label{font-family:‘Cinzel’,serif;font-size:10px;letter-spacing:3px;color:rgba(212,175,55,.45);text-transform:uppercase;margin-bottom:14px}
 .fb-story-text{font-family:‘Lora’,serif;font-size:clamp(15px,2.2vw,19px);line-height:1.85;color:#e8d5b7;font-style:italic;flex:1;overflow-y:auto}
@@ -195,7 +195,6 @@ const CSS = `
 
 /* ── iPAD LANDSCAPE reader — side by side ── */
 @media(min-width:768px) and (orientation:landscape){
-.fb-page{flex-direction:row}
 .fb-img{width:100%;height:200px;flex:none;object-fit:cover;display:block}
 .fb-text-area{flex:1;padding:36px 40px}
 .fb-story-text{font-size:19px}
