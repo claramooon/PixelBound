@@ -396,8 +396,6 @@ setDelTarget(null); load();
 return (
 <div className="home">
 <div className="hero">
-<div className="hero-eyebrow">✦   A Magical Story Creator   ✦</div>
-<h1 className="hero-title">PixelBound</h1>
 <p className="hero-sub">Weave enchanting tales from magical scenes.<br/>Every story you write lives in the library below.</p>
 <div className="hero-rule"/>
 <button className="hero-btn" onClick={onNewStory}><span style={{fontSize:17}}>✨</span> Craft a New Story</button>
