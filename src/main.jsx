@@ -15,7 +15,6 @@ function getWeekFolder() {
 
 
 const WEEK_FOLDER = getWeekFolder();
-const WEEK_FOLDER = getWeekFolder();
 document.title = "PixelBound - " + WEEK_FOLDER;
 
 
