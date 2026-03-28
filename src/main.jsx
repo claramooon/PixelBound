@@ -13,8 +13,8 @@ function getWeekFolder() {
 const WEEK_FOLDER = getWeekFolder();
 
 const STORY_IMAGES = [
-  { id: 1, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/dragon1.png`, label: "Scene 1", emoji: "✨" },
-  { id: 2, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/Marsh2.jpg`, label: "Scene 2", emoji: "✨" },
+  { id: 1, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image1.png`, label: "Scene 1", emoji: "✨" },
+  { id: 2, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image1.jpg`, label: "Scene 2", emoji: "✨" },
   { id: 3, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/Marsh3.jpg`, label: "Scene 3", emoji: "✨" },
   { id: 4, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/Marsh4.jpg`, label: "Scene 4", emoji: "✨" },
   { id: 5, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/Marsh5.jpg`, label: "Scene 5", emoji: "✨" },
