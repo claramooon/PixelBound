@@ -5,10 +5,14 @@ const CLOUDINARY_BASE = "https://res.cloudinary.com/donmltebd/image/upload";
 
 function getWeekFolder() {
   const now = new Date();
-  const startOfYear = new Date(now.getFullYear(), 0, 1);
-  const week = Math.ceil(((now - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
-  return `${now.getFullYear()}W${week}`;
+  const date = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+  const dayNum = date.getUTCDay() || 7;
+  date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+  const week = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+  return `${date.getUTCFullYear()}W${String(week).padStart(2, '0')}`;
 }
+
 
 const WEEK_FOLDER = getWeekFolder();
 
