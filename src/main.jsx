@@ -523,7 +523,7 @@ return (
 </div>}
 {step===1&&<div>
 <div className="pbt">📚 Arrange Your Pages</div>
-<div className="pbhint">Drag to reorder, or use the arrows! Tap ★ to set your cover image.</div>
+<div className="pbhint">Use the arrows to change the order! Tap ★ to set your cover image.</div>
 <div className="pbarrlist">
 {selectedImages.map((img,idx)=>{
 const isCover=(coverImageId===null&&idx===0)||coverImageId===img.id;
