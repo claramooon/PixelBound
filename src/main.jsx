@@ -191,16 +191,16 @@ const CSS = `
 body{margin:0;padding:0;background:white!important}
 .pb,.fb,.fb-stars{display:none!important}
 .print-book{display:block!important}
-.print-cover{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;page-break-after:always;background:white}
+.print-cover{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;break-after:page;background:white}
 .print-cover-title{font-family:Georgia,serif;font-size:42px;font-weight:bold;color:#2d1b69;margin-bottom:16px}
 .print-cover-rule{width:80px;height:2px;background:#d4af37;margin:20px auto}
 .print-cover-author{font-size:20px;color:#666;font-style:italic}
-.print-page{page-break-after:always;width:100%;height:100vh;display:flex;flex-direction:column;background:white}
+.print-page{break-after:page;width:100%;height:100vh;display:flex;flex-direction:column;background:white}
 .print-img{width:100%;height:55vh;object-fit:contain;display:block;background:#f9f9f9}
 .print-text-area{flex:1;padding:24px 40px;display:flex;align-items:center;justify-content:center}
 .print-text{font-size:18px;line-height:1.8;color:#222;text-align:center;font-family:Georgia,serif}
 .print-page-num{text-align:center;font-size:11px;color:#999;padding:8px;font-family:Georgia,serif;letter-spacing:2px}
-.print-end{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:white;text-align:center}
+.print-end{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:white;text-align:center;break-before:page}
 .print-end-word{font-family:Georgia,serif;font-size:48px;color:#2d1b69;letter-spacing:8px}
 .print-end-sub{font-size:13px;color:#999;letter-spacing:3px;margin-top:16px}
 }
