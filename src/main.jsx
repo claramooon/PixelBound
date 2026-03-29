@@ -1,33 +1,29 @@
 import { useState, useEffect } from “react”;
 import { createRoot } from “react-dom/client”;
 
-const CLOUDINARY_BASE = "https://res.cloudinary.com/donmltebd/image/upload";
+const CLOUDINARY_BASE = “https://res.cloudinary.com/donmltebd/image/upload”;
 
 function getWeekFolder() {
-  const now = new Date();
-  const date = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
-  const dayNum = date.getUTCDay() || 7;
-  date.setUTCDate(date.getUTCDate() + 4 - dayNum);
-  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
-  const week = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
-  return `${date.getUTCFullYear()}W${String(week).padStart(2, '0')}`;
+const now = new Date();
+const date = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()));
+const dayNum = date.getUTCDay() || 7;
+date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+const week = Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+return `${date.getUTCFullYear()}W${String(week).padStart(2, '0')}`;
 }
 
-
 const WEEK_FOLDER = getWeekFolder();
-document.title = "PixelBound - " + WEEK_FOLDER;
-
-
 
 const STORY_IMAGES = [
-  { id: 1, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image1.png`, label: "Scene 1", emoji: "✨" },
-  { id: 2, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image2.png`, label: "Scene 2", emoji: "✨" },
-  { id: 3, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image3.png`, label: "Scene 3", emoji: "✨" },
-  { id: 4, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image4.png`, label: "Scene 4", emoji: "✨" },
-  { id: 5, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image5.png`, label: "Scene 5", emoji: "✨" },
-  { id: 6, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image6.png`, label: "Scene 6", emoji: "✨" },
-  { id: 7, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image7.png`, label: "Scene 7", emoji: "✨" },
-  { id: 8, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image8.png`, label: "Scene 8", emoji: "✨" },
+{ id: 1, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image1.png`, label: “Scene 1”, emoji: “✨” },
+{ id: 2, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image2.png`, label: “Scene 2”, emoji: “✨” },
+{ id: 3, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image3.png`, label: “Scene 3”, emoji: “✨” },
+{ id: 4, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image4.png`, label: “Scene 4”, emoji: “✨” },
+{ id: 5, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image5.png`, label: “Scene 5”, emoji: “✨” },
+{ id: 6, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image6.png`, label: “Scene 6”, emoji: “✨” },
+{ id: 7, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image7.png`, label: “Scene 7”, emoji: “✨” },
+{ id: 8, src: `${CLOUDINARY_BASE}/PixelBound/${WEEK_FOLDER}/image8.png`, label: “Scene 8”, emoji: “✨” },
 ];
 
 const DEMO = {
@@ -39,8 +35,8 @@ selectedImages: STORY_IMAGES.slice(0, 4),
 pages: {
 1: “Deep within the enchanted castle, a brave knight discovered a door that no one had ever managed to open. Behind it, she sensed, lay the greatest secret of the realm.”,
 2: “The magical forest whispered ancient songs as she walked its mossy paths. Every tree had a memory, and every breeze carried a name long forgotten.”,
-3: “The dragon had guarded the silver key for a thousand years, waiting patiently for someone courageous enough — and kind enough — to ask for it properly.”,
-4: “At last the mystical ocean revealed the hidden cove where the treasure had always been. Not gold, not jewels — but the knowledge of how to find your way home.”,
+3: “The dragon had guarded the silver key for a thousand years, waiting patiently for someone courageous enough – and kind enough – to ask for it properly.”,
+4: “At last the mystical ocean revealed the hidden cove where the treasure had always been. Not gold, not jewels – but the knowledge of how to find your way home.”,
 }
 };
 
@@ -95,11 +91,10 @@ const CSS = `
 .scard-read{display:none}
 .scard-del{position:absolute;bottom:10px;right:10px;background:transparent;border:1px solid rgba(200,80,80,.35);border-radius:7px;padding:4px 10px;font-family:‘Cinzel’,serif;font-size:9px;letter-spacing:1px;color:rgba(200,80,80,.6);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;z-index:5;text-transform:uppercase}
 .scard-del:hover{border-color:rgba(200,80,80,.7);color:rgb(200,80,80);background:rgba(200,80,80,.1)}
+.scard-print{position:absolute;bottom:10px;left:118px;background:transparent;border:1px solid rgba(212,175,55,.35);border-radius:7px;padding:4px 10px;font-family:‘Cinzel’,serif;font-size:9px;letter-spacing:1px;color:rgba(212,175,55,.6);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;z-index:5;text-transform:uppercase}
+.scard-print:hover{border-color:#d4af37;color:#d4af37;background:rgba(212,175,55,.1)}
 
 .empty{text-align:center;padding:80px 20px;color:rgba(232,213,183,.3)}
-.empty-icon{font-size:54px;margin-bottom:20px;display:block;opacity:.35}
-.empty-title{font-family:‘Cinzel’,serif;font-size:17px;color:rgba(212,175,55,.32);margin-bottom:12px;letter-spacing:2px}
-.empty-text{font-style:italic;font-size:13px;line-height:1.8}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(5px)}
 .modal{background:#100d1f;border:1px solid rgba(212,175,55,.28);border-radius:18px;padding:34px 30px;max-width:340px;width:90%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.6)}
 .modal-title{font-family:‘Cinzel’,serif;font-size:15px;color:#d4af37;margin-bottom:10px;letter-spacing:1px}
@@ -119,14 +114,12 @@ const CSS = `
 .pbimg-card:hover{border-color:rgba(212,175,55,.5);transform:translateY(-3px);box-shadow:0 8px 20px rgba(212,175,55,.15)}
 .pbimg-card.sel{border-color:#d4af37;box-shadow:0 0 0 2px rgba(212,175,55,.25),0 6px 18px rgba(212,175,55,.2)}
 .pbimg-card img{width:100%;height:110px;object-fit:cover;display:block}
-.pbimg-lbl{padding:7px 9px;font-size:12px;color:#e8d5b7;display:flex;align-items:center;gap:5px}
 .pbcheck{position:absolute;top:7px;right:7px;width:20px;height:20px;border-radius:50%;background:#d4af37;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0d0a1a;box-shadow:0 2px 6px rgba(0,0,0,.3)}
 .pbbadge{background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.28);border-radius:20px;padding:5px 14px;font-size:12px;color:#d4af37;font-family:‘Cinzel’,serif;width:fit-content;margin:0 auto 20px}
 .pbpages{display:flex;flex-direction:column;gap:18px;margin-bottom:26px}
 .pbpc{background:rgba(255,255,255,.04);border:1px solid rgba(212,175,55,.18);border-radius:13px;overflow:hidden}
 .pbph{display:flex;align-items:center;gap:10px;padding:11px 14px;background:rgba(212,175,55,.07);border-bottom:1px solid rgba(212,175,55,.12)}
 .pbpn{font-family:‘Cinzel’,serif;font-size:12px;font-weight:600;color:#d4af37;background:rgba(212,175,55,.14);padding:3px 10px;border-radius:18px;white-space:nowrap}
-.pbps{font-size:13px;color:rgba(232,213,183,.65);font-style:italic;flex:1}
 .pbpb{display:flex}
 .pbpi{width:170px;min-width:170px;height:120px;object-fit:cover;border-right:1px solid rgba(212,175,55,.1)}
 .pbtxt{flex:1;background:transparent;border:none;outline:none;padding:12px 14px;font-family:‘Lora’,serif;font-size:13.5px;color:#e8d5b7;resize:none;min-height:120px;line-height:1.75}
@@ -135,7 +128,6 @@ const CSS = `
 .pbai{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid rgba(212,175,55,.18);border-radius:11px;padding:11px 14px;transition:all .2s}
 .pbath{width:60px;height:43px;object-fit:cover;border-radius:6px;border:1px solid rgba(212,175,55,.18);flex-shrink:0}
 .pbai-info{flex:1;min-width:0}
-.pbai-title{font-family:‘Cinzel’,serif;font-size:12px;color:#d4af37;margin-bottom:2px}
 .pbai-prev{font-size:11px;color:rgba(232,213,183,.45);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-style:italic}
 .pbarr{display:flex;flex-direction:column;gap:3px}
 .pbarr-btn{background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);border-radius:7px;color:#d4af37;width:36px;height:30px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;transition:all .15s}
@@ -182,8 +174,7 @@ const CSS = `
 .fb-end-sub{font-family:‘Cinzel’,serif;font-size:13px;color:rgba(212,175,55,.7);text-transform:uppercase}
 .fb-text-area{flex:1;display:flex;flex-direction:column;padding:24px 28px 16px;background:linear-gradient(to bottom,#1a1230 0%,#100d22 100%);overflow-y:auto;position:relative;min-height:0}
 .fb-text-area::before{content:’’;position:absolute;top:0;left:28px;right:28px;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.2),transparent)}
-.fb-scene-label{font-family:‘Cinzel’,serif;font-size:10px;letter-spacing:3px;color:rgba(212,175,55,.45);text-transform:uppercase;margin-bottom:14px}
-.fb-story-text{font-family:‘Lora’,serif;font-size:clamp(15px,2.2vw,19px);line-height:1.85;color:#e8d5b7;font-style:italic;flex:1;overflow-y:auto;white-space:pre-wrap;}
+.fb-story-text{font-family:‘Lora’,serif;font-size:clamp(15px,2.2vw,19px);line-height:1.85;color:#e8d5b7;font-style:italic;flex:1;overflow-y:auto;white-space:pre-wrap}
 .fb-story-text::-webkit-scrollbar{width:3px}
 .fb-story-text::-webkit-scrollbar-thumb{background:rgba(212,175,55,.2);border-radius:2px}
 .fb-empty-text{color:rgba(232,213,183,.25);font-style:italic}
@@ -196,7 +187,26 @@ const CSS = `
 .fb-dot.active{background:#d4af37;transform:scale(1.3);box-shadow:0 0 8px rgba(212,175,55,.5)}
 .fb-dot:hover:not(.active){background:rgba(212,175,55,.45)}
 
-/* ── iPAD (768px+) ── */
+@media print{
+body{margin:0;padding:0;background:white!important}
+.pb,.fb,.fb-stars{display:none!important}
+.print-book{display:block!important}
+.print-cover{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;page-break-after:always;background:white}
+.print-cover-title{font-family:Georgia,serif;font-size:42px;font-weight:bold;color:#2d1b69;margin-bottom:16px}
+.print-cover-rule{width:80px;height:2px;background:#d4af37;margin:20px auto}
+.print-cover-author{font-size:20px;color:#666;font-style:italic}
+.print-page{page-break-after:always;width:100%;height:100vh;display:flex;flex-direction:column;background:white}
+.print-img{width:100%;height:55vh;object-fit:contain;display:block;background:#f9f9f9}
+.print-text-area{flex:1;padding:24px 40px;display:flex;align-items:center;justify-content:center}
+.print-text{font-size:18px;line-height:1.8;color:#222;text-align:center;font-family:Georgia,serif}
+.print-page-num{text-align:center;font-size:11px;color:#999;padding:8px;font-family:Georgia,serif;letter-spacing:2px}
+.print-end{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:white;text-align:center}
+.print-end-word{font-family:Georgia,serif;font-size:48px;color:#2d1b69;letter-spacing:8px}
+.print-end-sub{font-size:13px;color:#999;letter-spacing:3px;margin-top:16px}
+}
+.print-book{display:none}
+
+/* iPad */
 @media(min-width:768px){
 .pbgrid{grid-template-columns:repeat(4,1fr)}
 .pbimg-card img{height:130px}
@@ -211,14 +221,14 @@ const CSS = `
 .pbcard{padding:44px}
 }
 
-/* ── iPAD LANDSCAPE reader — side by side ── */
+/* iPad landscape */
 @media(min-width:768px) and (orientation:landscape){
 .fb-img{flex:0 0 42%;object-fit:contain;background:#06040f}
 .fb-text-area{flex:1;padding:36px 40px}
 .fb-story-text{font-size:19px}
 }
 
-/* ── iPHONE (max 767px) ── */
+/* iPhone */
 @media(max-width:767px){
 .pbgrid{grid-template-columns:repeat(2,1fr)}
 .pbpb{flex-direction:column}
@@ -231,16 +241,15 @@ const CSS = `
 .fb-nav-btn{width:52px;height:52px;font-size:26px}
 .fb-img{flex:0 0 42%;object-fit:contain;background:#06040f}
 .hero{padding:40px 16px 36px}
-.hero-title{font-size:42px}
 .pbm{padding:12px 16px 40px}
 .pbarrlist{gap:8px}
 .pbai{padding:10px 10px}
-/* Bigger touch targets for all buttons on iPhone */
 .pb-btn-p{padding:15px 28px;font-size:13px}
 .pb-btn-s{padding:14px 22px}
 .pbarr-btn{width:42px;height:36px;font-size:16px}
 .scard{height:86px}
 .scard-thumb{width:100px;min-width:100px}
+.scard-print{left:108px}
 }
 `;
 
@@ -248,7 +257,40 @@ function fmtDate(ts) {
 return new Date(ts).toLocaleDateString(“en-US”,{month:“short”,day:“numeric”,year:“numeric”});
 }
 
-function FlipBook({ story, onClose }) {
+function PrintBook({ story, onClose }) {
+const imgs = story.selectedImages || [];
+useEffect(() => {
+document.body.style.overflow = ‘hidden’;
+setTimeout(() => window.print(), 500);
+const afterPrint = () => { onClose(); document.body.style.overflow = ‘’; };
+window.addEventListener(‘afterprint’, afterPrint);
+return () => { window.removeEventListener(‘afterprint’, afterPrint); document.body.style.overflow = ‘’; };
+}, []);
+return (
+<div className="print-book">
+<div className="print-cover">
+<div className="print-cover-title">{story.storyTitle || “Untitled Story”}</div>
+<div className="print-cover-rule"/>
+{story.authorName && <div className="print-cover-author">by {story.authorName}</div>}
+</div>
+{imgs.map((img, idx) => (
+<div className="print-page" key={img.id}>
+<img src={img.src} alt={img.label} className="print-img"/>
+<div className="print-text-area">
+<div className="print-text">{(story.pages || {})[img.id] || “”}</div>
+</div>
+<div className="print-page-num">– {idx + 1} –</div>
+</div>
+))}
+<div className="print-end">
+<div className="print-end-word">The End</div>
+<div className="print-end-sub">* {story.storyTitle} *</div>
+</div>
+</div>
+);
+}
+
+function FlipBook({ story, onClose, onPrint }) {
 const imgs = story.selectedImages || [];
 const total = imgs.length + 2;
 const [current, setCurrent] = useState(0);
@@ -292,7 +334,7 @@ return (
 <div className="fb-cover-title">{story.storyTitle || “Untitled Story”}</div>
 <div className="fb-cover-rule" />
 {story.authorName && <div className="fb-cover-author">by {story.authorName}</div>}
-<div className="fb-cover-hint">tap › to begin</div>
+<div className="fb-cover-hint">tap to begin</div>
 </div>
 );
 }
@@ -301,6 +343,7 @@ if (pageIdx === total - 1) return (
 <div className="fb-end-ornament">✦</div>
 <div className="fb-end-word">The End</div>
 <div className="fb-end-sub">✦   {story.storyTitle}   ✦</div>
+{onPrint && <button className=“pb-btn-s” style={{marginTop:24,fontSize:11,padding:“10px 24px”}} onClick={onPrint}>🖨️ Print / Save as PDF</button>}
 </div>
 );
 const img = imgs[pageIdx - 1];
@@ -365,20 +408,16 @@ const cls = settled ? “fb-page slide-in” : (dir===‘next’ ? “fb-page en
 return <div className={cls}>{render()}</div>;
 }
 
-function Homepage({ onNewStory, onRead, sessionStories, onDelete }) {
+function Homepage({ onNewStory, onRead, sessionStories, onDelete, onPrint }) {
 const [storageStories, setStorageStories] = useState(null);
 const [delTarget, setDelTarget] = useState(null);
 useEffect(()=>{ load(); },[]);
 
 async function load() {
 try {
-// List ALL keys, no prefix, to see everything in storage
 const _ks = Object.keys(localStorage).filter(k=>k.startsWith(“pbstory:”)); const res = {keys: _ks};
-setDebugInfo(“All storage keys: “ + JSON.stringify(res));
-if (!res?.keys?.length){ setStorageStories([]); return; }
-const pbKeys = res.keys.filter(k => k.startsWith(“pbstory:”));
-if (!pbKeys.length){ setStorageStories([]); return; }
-const all = await Promise.all(pbKeys.map(async k=>{
+if (!res.keys.length){ setStorageStories([]); return; }
+const all = await Promise.all(res.keys.map(async k=>{
 try{
 const _rv=localStorage.getItem(k); const r=_rv?{value:_rv}:null;
 if(!r) return null;
@@ -390,10 +429,9 @@ return {_key:k,…d};
 }catch{ return null; }
 }));
 setStorageStories(all.filter(Boolean));
-} catch(err) { setStorageStories([]); setDebugInfo(“List error: “+String(err?.message||err)); }
+} catch(err) { setStorageStories([]); }
 }
 
-// Merge session stories + storage stories, dedupe by createdAt, sort newest first
 const merged = (() => {
 const base = […(sessionStories||[])];
 const sessionTs = new Set(base.map(s=>s.createdAt));
@@ -436,6 +474,7 @@ return (
 <div className="scard-date">{fmtDate(s.createdAt)}</div>
 <span className="scard-pages">{(s.selectedImages||[]).length} {(s.selectedImages||[]).length===1?“page”:“pages”}</span>
 {s._key!==‘demo’&&<button className=“scard-del” onClick={e=>{e.stopPropagation();setDelTarget(s);}}>🗑 Delete</button>}
+{s._key!==‘demo’&&<button className=“scard-print” onClick={e=>{e.stopPropagation();onPrint&&onPrint(s);}}>🖨️ Print</button>}
 </div>
 </div>
 ))}
@@ -465,8 +504,6 @@ const [authorName,setAuthorName]=useState(””);
 const [selectedImages,setSelectedImages]=useState([]);
 const [pages,setPages]=useState({});
 const [coverImageId,setCoverImageId]=useState(null);
-const [dragIndex,setDragIndex]=useState(null);
-const [dragOverIndex,setDragOverIndex]=useState(null);
 const [saving,setSaving]=useState(false);
 const [saveError,setSaveError]=useState(null);
 const [storyReady,setStoryReady]=useState(null);
@@ -477,7 +514,6 @@ useEffect(()=>{ window.scrollTo({top:0,behavior:‘smooth’}); },[step]);
 const toggleImage=img=>setSelectedImages(p=>p.find(i=>i.id===img.id)?p.filter(i=>i.id!==img.id):[…p,img]);
 const isSel=id=>selectedImages.some(i=>i.id===id);
 const move=(from,to)=>{const a=[…selectedImages];const[x]=a.splice(from,1);a.splice(to,0,x);setSelectedImages(a);};
-const dragEnd=()=>{if(dragIndex!==null&&dragOverIndex!==null&&dragIndex!==dragOverIndex)move(dragIndex,dragOverIndex);setDragIndex(null);setDragOverIndex(null);};
 
 async function saveAndRead(){
 setSaving(true); setSaveError(null);
@@ -531,7 +567,7 @@ return (
 <div key={img.id} className="pbai">
 <img src={img.src} alt={img.label} className=“pbath” style={{boxShadow:isCover?“0 0 0 2px #d4af37”:undefined}}/>
 <div className="pbai-info">
-<div className="pbai-prev">{pages[img.id]?`"${pages[img.id].slice(0,65)}${pages[img.id].length>65?"…":""}"`:“No text yet”}</div>
+<div className="pbai-prev">{pages[img.id]?`"${pages[img.id].slice(0,65)}${pages[img.id].length>65?"...":""}"`:“No text yet”}</div>
 </div>
 <button className={`pbcover-btn${isCover?" active":""}`} onClick={()=>setCoverImageId(img.id)} title=“Set as cover”>
 {isCover?“★ Cover”:“☆ Cover”}
@@ -558,7 +594,7 @@ return (
 <div key={img.id} className="pbpc">
 <div className="pbph">
 <span className="pbpn">Page {idx+1}</span>
-<button className=“pb-btn-d” onClick={()=>setSelectedImages(p=>p.filter(i=>i.id!==img.id))}>× Remove</button>
+<button className=“pb-btn-d” onClick={()=>setSelectedImages(p=>p.filter(i=>i.id!==img.id))}>x Remove</button>
 </div>
 <div className="pbpb">
 <img src={img.src} alt={img.label} className="pbpi"/>
@@ -574,7 +610,7 @@ return (
 </div>}
 {step===3&&<div>
 <div className="pbt">✨ Name Your Story ✨</div>
-<div className="pbhint">Now that you’ve written it — what’s it called?</div>
+<div className="pbhint">Now that you’ve written it – what’s it called?</div>
 <div className="pbcard">
 <label className="pblbl">Story Title</label>
 <input className=“pbinput” type=“text” placeholder=“The Dragon and the Silver Key…” value={storyTitle} onChange={e=>setStoryTitle(e.target.value)} autoFocus/>
@@ -599,6 +635,7 @@ function PixelBound() {
 const [view,setView]=useState(“home”);
 const [activeStory,setActiveStory]=useState(null);
 const [reading,setReading]=useState(false);
+const [printing,setPrinting]=useState(null);
 const [sessionStories,setSessionStories]=useState([]);
 
 function handleSaved(story) {
@@ -615,19 +652,20 @@ setSessionStories(prev=>prev.filter(s=>s.createdAt!==createdAt));
 return (
 <>
 <style>{CSS}</style>
-{reading&&activeStory&&<FlipBook story={activeStory} onClose={()=>setReading(false)}/>}
+{printing&&<PrintBook story={printing} onClose={()=>setPrinting(null)}/>}
+{reading&&activeStory&&<FlipBook story={activeStory} onClose={()=>setReading(false)} onPrint={()=>{setReading(false);setPrinting(activeStory);}}/>}
 <div className="pb">
 <header className="pbh">
 {view!==“home”
 ?<button className=“pbh-action” onClick={()=>setView(“home”)}>← Library</button>
 :<div style={{minWidth:90}}/>}
 <div className="pbh-logo">
-<img src=“https://res.cloudinary.com/donmltebd/image/upload/v1774344846/img_5534_aadazm_f1f475” alt=“PixelBound” style={{width:"100%",height:"auto",objectFit:"contain",filter:“drop-shadow(0 0 14px rgba(212,175,55,.4))”}}/>
+<img src=“https://res.cloudinary.com/donmltebd/image/upload/v1774344846/img_5534_aadazm_f1f475” alt=“PixelBound” style={{width:“100%”,height:“auto”,objectFit:“contain”,filter:“drop-shadow(0 0 14px rgba(212,175,55,.4))”}}/>
 <div className="pbh-sub">Craft Your Magical Story</div>
 </div>
 <div style={{minWidth:90}}/>
 </header>
-{view===“home”&&<Homepage onNewStory={()=>setView(“builder”)} onRead={s=>{setActiveStory(s);setReading(true);}} sessionStories={sessionStories} onDelete={handleDelete}/>}
+{view===“home”&&<Homepage onNewStory={()=>setView(“builder”)} onRead={s=>{setActiveStory(s);setReading(true);}} sessionStories={sessionStories} onDelete={handleDelete} onPrint={s=>setPrinting(s)}/>}
 {view===“builder”&&<Builder onSaved={handleSaved} onCancel={()=>setView(“home”)}/>}
 </div>
 </>
