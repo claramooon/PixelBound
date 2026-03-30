@@ -244,8 +244,7 @@ const [htmlContent, setHtmlContent] = useState(’’);
 
 useEffect(() => {
 const pages = imgs.map((img, idx) => {
-const text = ((story.pages || {})[img.id] || ‘’).replace(/&/g,’&’).replace(/</g,’<’).replace(/>/g,’>’).replace(/
-/g,’<br/>’);
+const text = ((story.pages || {})[img.id] || ‘’).replace(/&/g,’&’).replace(/</g,’<’).replace(/>/g,’>’).split(String.fromCharCode(10)).join(’<br/>’);
 return ‘<div class="page"><img src="' + img.src + '" class="page-img"/><div class="page-text">’ + text + ‘</div><div class="page-num">- ’ + (idx+1) + ’ -</div></div>’;
 }).join(’’);
 const authorLine = story.authorName ? ‘<p>by ’ + story.authorName + ‘</p>’ : ‘’;
