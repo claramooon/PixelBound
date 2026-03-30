@@ -240,54 +240,39 @@ return new Date(ts).toLocaleDateString(“en-US”,{month:“short”,day:“num
 
 function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
-
-useEffect(() => {
 const coverImg = imgs.find(i=>i.id===story.coverImageId) || imgs[0];
-const coverSrc = coverImg ? coverImg.src : ‘’;
-const pages = imgs.map((img, idx) => {
-const text = ((story.pages || {})[img.id] || ‘’).split(String.fromCharCode(10)).join(’<br/>’);
-return ‘<div class="page"><img src="' + img.src + '" class="page-img"/><div class="page-text">’ + text + ‘</div><div class="page-num">- ’ + (idx+1) + ’ -</div></div>’;
-}).join(’’);
-const authorLine = story.authorName ? ‘<p class="cover-author">by ’ + story.authorName + ‘</p>’ : ‘’;
-const coverBg = coverSrc ? ‘background:linear-gradient(to bottom,rgba(6,4,15,.2) 0%,rgba(6,4,15,.7) 60%,rgba(6,4,15,1) 100%),url(’ + coverSrc + ‘) center/cover no-repeat’ : ‘background:#2d1b69’;
-const html = ‘<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>’ + (story.storyTitle||‘My Story’) + ‘</title><style>’ +
-‘@page{margin:0;size:A4}*{box-sizing:border-box;margin:0;padding:0}body{font-family:Georgia,serif;background:white}’ +
-‘.cover{display:flex;flex-direction:column;align-items:center;justify-content:center;height:297mm;text-align:center;page-break-after:always;’ + coverBg + ‘;color:white;padding:40px}’ +
-‘.cover h1{font-size:36px;font-weight:bold;margin-bottom:12px;color:#d4af37;text-shadow:0 0 20px rgba(212,175,55,.4)}’ +
-‘.cover hr{width:80px;border:1px solid #d4af37;margin:16px auto}’ +
-‘.cover-author{font-size:18px;color:rgba(255,255,255,.7);font-style:italic}’ +
-‘.page{height:297mm;display:flex;flex-direction:column;page-break-after:always;page-break-inside:avoid;background:white}’ +
-‘.page-img{width:100%;height:148mm;object-fit:contain;display:block;background:#f9f9f9;flex-shrink:0}’ +
-‘.page-text{flex:1;padding:20px 32px;font-size:16px;line-height:1.8;color:#222;text-align:center;display:flex;align-items:center;justify-content:center}’ +
-‘.page-num{text-align:center;font-size:10px;color:#aaa;padding:8px;letter-spacing:2px}’ +
-‘.end{display:flex;flex-direction:column;align-items:center;justify-content:center;height:297mm;text-align:center;background:white;page-break-before:always}’ +
-‘.end h2{font-size:48px;color:#2d1b69;letter-spacing:8px}.end p{font-size:13px;color:#aaa;margin-top:12px;letter-spacing:3px}’ +
-‘</style></head><body>’ +
-‘<div class="cover"><h1>’ + (story.storyTitle||‘My Story’) + ‘</h1><hr/>’ + authorLine + ‘</div>’ +
-pages +
-’<div class="end"><h2>The End</h2><p>* ’ + (story.storyTitle||’’) + ’ *</p></div>’ +
-‘</body></html>’;
-
-```
-const iframe = document.createElement('iframe');
-iframe.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;';
-document.body.appendChild(iframe);
-iframe.contentDocument.open();
-iframe.contentDocument.write(html);
-iframe.contentDocument.close();
-setTimeout(() => {
-  iframe.contentWindow.focus();
-  iframe.contentWindow.print();
-  setTimeout(() => { document.body.removeChild(iframe); onClose(); }, 1000);
-}, 800);
-```
-
-}, []);
 
 return (
-<div style={{position:‘fixed’,inset:0,background:‘rgba(0,0,0,.7)’,zIndex:9999,display:‘flex’,alignItems:‘center’,justifyContent:‘center’}}>
-<div style={{fontFamily:”‘Cinzel’,serif”,fontSize:14,color:’#d4af37’,letterSpacing:2,textAlign:‘center’}}>Preparing your story…</div>
+<div style={{position:‘fixed’,inset:0,background:‘white’,zIndex:9999,overflowY:‘auto’,fontFamily:‘Georgia,serif’}}>
+<style>{`@media print { .no-print { display: none !important; } .print-page { page-break-after: always; page-break-inside: avoid; } } .print-cover { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px; background:${coverImg ? 'linear-gradient(to bottom,rgba(6,4,15,.2),rgba(6,4,15,.75)),url('+coverImg.src+') center/cover no-repeat' : '#2d1b69'}; color:white; } .print-cover h1 { font-size:36px; color:#d4af37; margin-bottom:12px; } .print-cover hr { width:80px; border:1px solid #d4af37; margin:16px auto; } .print-cover p { font-size:18px; color:rgba(255,255,255,.7); font-style:italic; } .print-page { background:white; padding:0; } .print-page img { width:100%; height:50vh; object-fit:contain; display:block; background:#f9f9f9; } .print-page .story-text { padding:20px 32px; font-size:16px; line-height:1.8; color:#222; text-align:center; } .print-page .page-num { text-align:center; font-size:10px; color:#aaa; padding:8px; letter-spacing:2px; } .print-end { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; background:white; } .print-end h2 { font-size:48px; color:#2d1b69; letter-spacing:8px; } .print-end p { font-size:13px; color:#aaa; margin-top:12px; letter-spacing:3px; }`}</style>
+
+```
+  <div className="no-print" style={{position:'sticky',top:0,background:'rgba(255,255,255,.95)',padding:'12px 20px',display:'flex',gap:12,justifyContent:'center',borderBottom:'1px solid #eee',zIndex:10}}>
+    <button onClick={()=>window.print()} style={{background:'#2d1b69',color:'white',border:'none',borderRadius:8,padding:'10px 24px',fontFamily:'Georgia,serif',fontSize:14,cursor:'pointer'}}>🖨️ Print / Save as PDF</button>
+    <button onClick={onClose} style={{background:'transparent',color:'#666',border:'1px solid #ccc',borderRadius:8,padding:'10px 24px',fontFamily:'Georgia,serif',fontSize:14,cursor:'pointer'}}>✕ Close</button>
+  </div>
+
+  <div className="print-cover">
+    <h1>{story.storyTitle || 'My Story'}</h1>
+    <hr/>
+    {story.authorName && <p>by {story.authorName}</p>}
+  </div>
+
+  {imgs.map((img, idx) => (
+    <div className="print-page" key={img.id}>
+      <img src={img.src} alt={img.label}/>
+      <div className="story-text">{(story.pages||{})[img.id]||''}</div>
+      <div className="page-num">- {idx+1} -</div>
+    </div>
+  ))}
+
+  <div className="print-end">
+    <h2>The End</h2>
+    <p>* {story.storyTitle} *</p>
+  </div>
 </div>
+```
+
 );
 }
 
