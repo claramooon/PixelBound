@@ -91,7 +91,7 @@ const CSS = `
 .scard-read{display:none}
 .scard-del{position:absolute;bottom:10px;right:10px;background:transparent;border:1px solid rgba(200,80,80,.35);border-radius:7px;padding:4px 10px;font-family:‘Cinzel’,serif;font-size:9px;letter-spacing:1px;color:rgba(200,80,80,.6);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;z-index:5;text-transform:uppercase}
 .scard-del:hover{border-color:rgba(200,80,80,.7);color:rgb(200,80,80);background:rgba(200,80,80,.1)}
-.scard-print{position:absolute;bottom:10px;left:118px;background:transparent;border:1px solid rgba(212,175,55,.35);border-radius:7px;padding:4px 10px;font-family:‘Cinzel’,serif;font-size:9px;letter-spacing:1px;color:rgba(212,175,55,.6);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;z-index:5;text-transform:uppercase}
+.scard-print{position:absolute;top:10px;left:118px;background:transparent;border:1px solid rgba(212,175,55,.35);border-radius:7px;padding:4px 10px;font-family:‘Cinzel’,serif;font-size:9px;letter-spacing:1px;color:rgba(212,175,55,.6);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;z-index:5;text-transform:uppercase}
 .scard-print:hover{border-color:#d4af37;color:#d4af37;background:rgba(212,175,55,.1)}
 
 .empty{text-align:center;padding:80px 20px;color:rgba(232,213,183,.3)}
@@ -187,25 +187,6 @@ const CSS = `
 .fb-dot.active{background:#d4af37;transform:scale(1.3);box-shadow:0 0 8px rgba(212,175,55,.5)}
 .fb-dot:hover:not(.active){background:rgba(212,175,55,.45)}
 
-@media print{
-body{margin:0;padding:0;background:white!important}
-.pb,.fb,.fb-stars{display:none!important}
-.print-book{display:block!important}
-.print-cover{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;break-after:page;background:white}
-.print-cover-title{font-family:Georgia,serif;font-size:42px;font-weight:bold;color:#2d1b69;margin-bottom:16px}
-.print-cover-rule{width:80px;height:2px;background:#d4af37;margin:20px auto}
-.print-cover-author{font-size:20px;color:#666;font-style:italic}
-.print-page{break-after:page;width:100%;height:100vh;display:flex;flex-direction:column;background:white}
-.print-img{width:100%;height:55vh;object-fit:contain;display:block;background:#f9f9f9}
-.print-text-area{flex:1;padding:24px 40px;display:flex;align-items:center;justify-content:center}
-.print-text{font-size:18px;line-height:1.8;color:#222;text-align:center;font-family:Georgia,serif}
-.print-page-num{text-align:center;font-size:11px;color:#999;padding:8px;font-family:Georgia,serif;letter-spacing:2px}
-.print-end{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:white;text-align:center;break-before:page}
-.print-end-word{font-family:Georgia,serif;font-size:48px;color:#2d1b69;letter-spacing:8px}
-.print-end-sub{font-size:13px;color:#999;letter-spacing:3px;margin-top:16px}
-}
-.print-book{display:none}
-
 /* iPad */
 @media(min-width:768px){
 .pbgrid{grid-template-columns:repeat(4,1fr)}
@@ -249,7 +230,7 @@ body{margin:0;padding:0;background:white!important}
 .pbarr-btn{width:42px;height:36px;font-size:16px}
 .scard{height:86px}
 .scard-thumb{width:100px;min-width:100px}
-.scard-print{left:108px}
+.scard-print{top:10px;left:108px;bottom:auto}
 }
 `;
 
@@ -259,35 +240,60 @@ return new Date(ts).toLocaleDateString(“en-US”,{month:“short”,day:“num
 
 function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
-useEffect(() => {
-document.body.style.overflow = ‘hidden’;
-setTimeout(() => window.print(), 500);
-const afterPrint = () => { onClose(); document.body.style.overflow = ‘’; };
-window.addEventListener(‘afterprint’, afterPrint);
-return () => { window.removeEventListener(‘afterprint’, afterPrint); document.body.style.overflow = ‘’; };
-}, []);
-return (
-<div className="print-book">
-<div className="print-cover">
-<div className="print-cover-title">{story.storyTitle || “Untitled Story”}</div>
-<div className="print-cover-rule"/>
-{story.authorName && <div className="print-cover-author">by {story.authorName}</div>}
-</div>
-{imgs.map((img, idx) => (
-<div className="print-page" key={img.id}>
-<img src={img.src} alt={img.label} className="print-img"/>
-<div className="print-text-area">
-<div className="print-text">{(story.pages || {})[img.id] || “”}</div>
-</div>
-<div className="print-page-num">– {idx + 1} –</div>
-</div>
-))}
-<div className="print-end">
-<div className="print-end-word">The End</div>
-<div className="print-end-sub">* {story.storyTitle} *</div>
-</div>
-</div>
-);
+
+function doPrint() {
+const win = window.open(’’, ‘_blank’);
+const pages = imgs.map((img, idx) => {
+const text = (story.pages || {})[img.id] || ‘’;
+return ` <div class="page"> <img src="${img.src}" class="page-img"/> <div class="page-text">${text.replace(/\n/g, '<br/>')}</div> <div class="page-num">- ${idx + 1} -</div> </div>`;
+}).join(’’);
+
+```
+win.document.write(`<!DOCTYPE html>
+```
+
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>${story.storyTitle || 'My Story'}</title>
+<style>
+  @page { margin: 10mm; size: A4; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Georgia, serif; background: white; }
+  .cover { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 270mm; text-align: center; page-break-after: always; }
+  .cover h1 { font-size: 36px; color: #2d1b69; margin-bottom: 12px; }
+  .cover hr { width: 80px; border: 2px solid #d4af37; margin: 16px auto; }
+  .cover p { font-size: 18px; color: #666; font-style: italic; }
+  .page { page-break-after: always; page-break-inside: avoid; }
+  .page-img { width: 100%; height: 140mm; object-fit: contain; display: block; background: #f9f9f9; }
+  .page-text { padding: 16px 24px; font-size: 16px; line-height: 1.8; color: #222; text-align: center; }
+  .page-num { text-align: center; font-size: 10px; color: #aaa; padding: 8px; letter-spacing: 2px; }
+  .end { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 270mm; text-align: center; }
+  .end h2 { font-size: 48px; color: #2d1b69; letter-spacing: 8px; }
+  .end p { font-size: 13px; color: #aaa; margin-top: 12px; letter-spacing: 3px; }
+</style>
+</head>
+<body>
+  <div class="cover">
+    <h1>${story.storyTitle || 'My Story'}</h1>
+    <hr/>
+    ${story.authorName ? `<p>by ${story.authorName}</p>` : ''}
+  </div>
+  ${pages}
+  <div class="end">
+    <h2>The End</h2>
+    <p>* ${story.storyTitle} *</p>
+  </div>
+</body>
+</html>`);
+    win.document.close();
+    win.focus();
+    setTimeout(() => { win.print(); win.close(); }, 800);
+    onClose();
+  }
+
+useEffect(() => { doPrint(); }, []);
+return null;
 }
 
 function FlipBook({ story, onClose, onPrint }) {
@@ -474,7 +480,7 @@ return (
 <div className="scard-date">{fmtDate(s.createdAt)}</div>
 <span className="scard-pages">{(s.selectedImages||[]).length} {(s.selectedImages||[]).length===1?“page”:“pages”}</span>
 {s._key!==‘demo’&&<button className=“scard-del” onClick={e=>{e.stopPropagation();setDelTarget(s);}}>🗑 Delete</button>}
-{s._key!==‘demo’&&<button className=“scard-print” onClick={e=>{e.stopPropagation();onPrint&&onPrint(s);}}>🖨️ Print</button>}
+{s._key!==‘demo’&&<button className=“scard-print” onClick={e=>{e.stopPropagation();onPrint&&onPrint(s);}}>🖨️ Print / Save</button>}
 </div>
 </div>
 ))}
