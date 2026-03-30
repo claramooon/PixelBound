@@ -249,48 +249,40 @@ return ` <div class="page"> <img src="${img.src}" class="page-img"/> <div class=
 }).join(’’);
 
 ```
-win.document.write(`<!DOCTYPE html>
+const authorLine = story.authorName ? '<p>by ' + story.authorName + '</p>' : '';
+const html = [
+  '<!DOCTYPE html><html><head>',
+  '<meta charset="UTF-8"/>',
+  '<title>' + (story.storyTitle || 'My Story') + '</title>',
+  '<style>',
+  '@page{margin:10mm;size:A4}',
+  '*{box-sizing:border-box;margin:0;padding:0}',
+  'body{font-family:Georgia,serif;background:white}',
+  '.cover{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:270mm;text-align:center;page-break-after:always}',
+  '.cover h1{font-size:36px;color:#2d1b69;margin-bottom:12px}',
+  '.cover hr{width:80px;border:2px solid #d4af37;margin:16px auto}',
+  '.cover p{font-size:18px;color:#666;font-style:italic}',
+  '.page{page-break-after:always;page-break-inside:avoid}',
+  '.page-img{width:100%;height:140mm;object-fit:contain;display:block;background:#f9f9f9}',
+  '.page-text{padding:16px 24px;font-size:16px;line-height:1.8;color:#222;text-align:center}',
+  '.page-num{text-align:center;font-size:10px;color:#aaa;padding:8px;letter-spacing:2px}',
+  '.end{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:270mm;text-align:center}',
+  '.end h2{font-size:48px;color:#2d1b69;letter-spacing:8px}',
+  '.end p{font-size:13px;color:#aaa;margin-top:12px;letter-spacing:3px}',
+  '</style></head><body>',
+  '<div class="cover"><h1>' + (story.storyTitle || 'My Story') + '</h1><hr/>' + authorLine + '</div>',
+  pages,
+  '<div class="end"><h2>The End</h2><p>* ' + (story.storyTitle || '') + ' *</p></div>',
+  '</body></html>'
+].join('');
+win.document.write(html);
+win.document.close();
+win.focus();
+setTimeout(() => { win.print(); win.close(); }, 800);
+onClose();
 ```
 
-<html>
-<head>
-<meta charset="UTF-8"/>
-<title>${story.storyTitle || 'My Story'}</title>
-<style>
-  @page { margin: 10mm; size: A4; }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Georgia, serif; background: white; }
-  .cover { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 270mm; text-align: center; page-break-after: always; }
-  .cover h1 { font-size: 36px; color: #2d1b69; margin-bottom: 12px; }
-  .cover hr { width: 80px; border: 2px solid #d4af37; margin: 16px auto; }
-  .cover p { font-size: 18px; color: #666; font-style: italic; }
-  .page { page-break-after: always; page-break-inside: avoid; }
-  .page-img { width: 100%; height: 140mm; object-fit: contain; display: block; background: #f9f9f9; }
-  .page-text { padding: 16px 24px; font-size: 16px; line-height: 1.8; color: #222; text-align: center; }
-  .page-num { text-align: center; font-size: 10px; color: #aaa; padding: 8px; letter-spacing: 2px; }
-  .end { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 270mm; text-align: center; }
-  .end h2 { font-size: 48px; color: #2d1b69; letter-spacing: 8px; }
-  .end p { font-size: 13px; color: #aaa; margin-top: 12px; letter-spacing: 3px; }
-</style>
-</head>
-<body>
-  <div class="cover">
-    <h1>${story.storyTitle || 'My Story'}</h1>
-    <hr/>
-    ${story.authorName ? `<p>by ${story.authorName}</p>` : ''}
-  </div>
-  ${pages}
-  <div class="end">
-    <h2>The End</h2>
-    <p>* ${story.storyTitle} *</p>
-  </div>
-</body>
-</html>`);
-    win.document.close();
-    win.focus();
-    setTimeout(() => { win.print(); win.close(); }, 800);
-    onClose();
-  }
+}
 
 useEffect(() => { doPrint(); }, []);
 return null;
