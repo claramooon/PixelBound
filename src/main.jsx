@@ -315,7 +315,7 @@ function renderPage(pageIdx) {
 if (pageIdx === 0) {
 const coverImg = imgs.find(i=>i.id===story.coverImageId) || imgs[0];
 return (
-<div className=“fb-cover-page” style={coverImg?{background:`linear-gradient(to bottom, rgba(6,4,15,.3) 0%, rgba(6,4,15,.85) 55%, #06040f 100%), url(${coverImg.src}) center/cover no-repeat`}:undefined}>
+<div className=“fb-cover-page” style={coverImg?{background:“linear-gradient(to bottom, rgba(6,4,15,.3) 0%, rgba(6,4,15,.85) 55%, #06040f 100%), url(” + coverImg.src + “) center/cover no-repeat”}:undefined}>
 <div className="fb-cover-icon">📖</div>
 <div className="fb-cover-title">{story.storyTitle || “Untitled Story”}</div>
 <div className="fb-cover-rule" />
