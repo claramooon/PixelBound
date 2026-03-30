@@ -244,7 +244,7 @@ const coverImg = imgs.find(i=>i.id===story.coverImageId) || imgs[0];
 
 return (
 <div style={{position:‘fixed’,inset:0,background:‘white’,zIndex:9999,overflowY:‘auto’,fontFamily:‘Georgia,serif’}}>
-<style>{`@media print { .no-print { display: none !important; } .print-page { page-break-after: always; page-break-inside: avoid; } } .print-cover { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px; background:${coverImg ? 'linear-gradient(to bottom,rgba(6,4,15,.2),rgba(6,4,15,.75)),url('+coverImg.src+') center/cover no-repeat' : '#2d1b69'}; color:white; } .print-cover h1 { font-size:36px; color:#d4af37; margin-bottom:12px; } .print-cover hr { width:80px; border:1px solid #d4af37; margin:16px auto; } .print-cover p { font-size:18px; color:rgba(255,255,255,.7); font-style:italic; } .print-page { background:white; padding:0; } .print-page img { width:100%; height:50vh; object-fit:contain; display:block; background:#f9f9f9; } .print-page .story-text { padding:20px 32px; font-size:16px; line-height:1.8; color:#222; text-align:center; } .print-page .page-num { text-align:center; font-size:10px; color:#aaa; padding:8px; letter-spacing:2px; } .print-end { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; background:white; } .print-end h2 { font-size:48px; color:#2d1b69; letter-spacing:8px; } .print-end p { font-size:13px; color:#aaa; margin-top:12px; letter-spacing:3px; }`}</style>
+<style>{`@media print { .no-print { display: none !important; } .print-page { page-break-after: always; page-break-inside: avoid; } } .print-cover { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px; color:white; } .print-cover h1 { font-size:36px; color:#d4af37; margin-bottom:12px; } .print-cover hr { width:80px; border:1px solid #d4af37; margin:16px auto; } .print-cover p { font-size:18px; color:rgba(255,255,255,.7); font-style:italic; } .print-page { background:white; padding:0; } .print-page img { width:100%; height:50vh; object-fit:contain; display:block; background:#f9f9f9; } .print-page .story-text { padding:20px 32px; font-size:16px; line-height:1.8; color:#222; text-align:center; } .print-page .page-num { text-align:center; font-size:10px; color:#aaa; padding:8px; letter-spacing:2px; } .print-end { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; background:white; } .print-end h2 { font-size:48px; color:#2d1b69; letter-spacing:8px; } .print-end p { font-size:13px; color:#aaa; margin-top:12px; letter-spacing:3px; }`}</style>
 
 ```
   <div className="no-print" style={{position:'sticky',top:0,background:'rgba(255,255,255,.95)',padding:'12px 20px',display:'flex',gap:12,justifyContent:'center',borderBottom:'1px solid #eee',zIndex:10}}>
@@ -252,7 +252,7 @@ return (
     <button onClick={onClose} style={{background:'transparent',color:'#666',border:'1px solid #ccc',borderRadius:8,padding:'10px 24px',fontFamily:'Georgia,serif',fontSize:14,cursor:'pointer'}}>✕ Close</button>
   </div>
 
-  <div className="print-cover">
+  <div className="print-cover" style={{background:coverImg?"linear-gradient(to bottom,rgba(6,4,15,.2),rgba(6,4,15,.75)),url("+coverImg.src+") center/cover no-repeat":"#2d1b69"}}>
     <h1>{story.storyTitle || 'My Story'}</h1>
     <hr/>
     {story.authorName && <p>by {story.authorName}</p>}
