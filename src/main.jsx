@@ -240,52 +240,54 @@ return new Date(ts).toLocaleDateString(“en-US”,{month:“short”,day:“num
 
 function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
+const [htmlContent, setHtmlContent] = useState(’’);
 
-function doPrint() {
-const win = window.open(’’, ‘_blank’);
+useEffect(() => {
 const pages = imgs.map((img, idx) => {
-const text = (story.pages || {})[img.id] || ‘’;
-return ` <div class="page"> <img src="${img.src}" class="page-img"/> <div class="page-text">${text.replace(/\n/g, '<br/>')}</div> <div class="page-num">- ${idx + 1} -</div> </div>`;
+const text = ((story.pages || {})[img.id] || ‘’).replace(/&/g,’&’).replace(/</g,’<’).replace(/>/g,’>’).replace(/
+/g,’<br/>’);
+return ‘<div class="page"><img src="' + img.src + '" class="page-img"/><div class="page-text">’ + text + ‘</div><div class="page-num">- ’ + (idx+1) + ’ -</div></div>’;
 }).join(’’);
+const authorLine = story.authorName ? ‘<p>by ’ + story.authorName + ‘</p>’ : ‘’;
+const html = ‘<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>’ + (story.storyTitle||‘My Story’) + ‘</title><style>’ +
+‘@page{margin:10mm;size:A4}*{box-sizing:border-box;margin:0;padding:0}body{font-family:Georgia,serif;background:white}’ +
+‘.cover{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:270mm;text-align:center;page-break-after:always}’ +
+‘.cover h1{font-size:36px;color:#2d1b69;margin-bottom:12px}.cover hr{width:80px;border:2px solid #d4af37;margin:16px auto}.cover p{font-size:18px;color:#666;font-style:italic}’ +
+‘.page{page-break-after:always;page-break-inside:avoid}.page-img{width:100%;height:140mm;object-fit:contain;display:block;background:#f9f9f9}’ +
+‘.page-text{padding:16px 24px;font-size:16px;line-height:1.8;color:#222;text-align:center}.page-num{text-align:center;font-size:10px;color:#aaa;padding:8px;letter-spacing:2px}’ +
+‘.end{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:270mm;text-align:center}.end h2{font-size:48px;color:#2d1b69;letter-spacing:8px}.end p{font-size:13px;color:#aaa;margin-top:12px;letter-spacing:3px}’ +
+‘</style></head><body>’ +
+‘<div class="cover"><h1>’ + (story.storyTitle||‘My Story’) + ‘</h1><hr/>’ + authorLine + ‘</div>’ +
+pages +
+’<div class="end"><h2>The End</h2><p>* ’ + (story.storyTitle||’’) + ’ *</p></div>’ +
+‘</body></html>’;
+setHtmlContent(html);
+}, []);
 
-```
-const authorLine = story.authorName ? '<p>by ' + story.authorName + '</p>' : '';
-const html = [
-  '<!DOCTYPE html><html><head>',
-  '<meta charset="UTF-8"/>',
-  '<title>' + (story.storyTitle || 'My Story') + '</title>',
-  '<style>',
-  '@page{margin:10mm;size:A4}',
-  '*{box-sizing:border-box;margin:0;padding:0}',
-  'body{font-family:Georgia,serif;background:white}',
-  '.cover{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:270mm;text-align:center;page-break-after:always}',
-  '.cover h1{font-size:36px;color:#2d1b69;margin-bottom:12px}',
-  '.cover hr{width:80px;border:2px solid #d4af37;margin:16px auto}',
-  '.cover p{font-size:18px;color:#666;font-style:italic}',
-  '.page{page-break-after:always;page-break-inside:avoid}',
-  '.page-img{width:100%;height:140mm;object-fit:contain;display:block;background:#f9f9f9}',
-  '.page-text{padding:16px 24px;font-size:16px;line-height:1.8;color:#222;text-align:center}',
-  '.page-num{text-align:center;font-size:10px;color:#aaa;padding:8px;letter-spacing:2px}',
-  '.end{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:270mm;text-align:center}',
-  '.end h2{font-size:48px;color:#2d1b69;letter-spacing:8px}',
-  '.end p{font-size:13px;color:#aaa;margin-top:12px;letter-spacing:3px}',
-  '</style></head><body>',
-  '<div class="cover"><h1>' + (story.storyTitle || 'My Story') + '</h1><hr/>' + authorLine + '</div>',
-  pages,
-  '<div class="end"><h2>The End</h2><p>* ' + (story.storyTitle || '') + ' *</p></div>',
-  '</body></html>'
-].join('');
-win.document.write(html);
-win.document.close();
-win.focus();
-setTimeout(() => { win.print(); win.close(); }, 800);
-onClose();
-```
+if (!htmlContent) return null;
 
-}
-
-useEffect(() => { doPrint(); }, []);
-return null;
+return (
+<div style={{position:‘fixed’,inset:0,background:‘rgba(0,0,0,.85)’,zIndex:9999,display:‘flex’,flexDirection:‘column’,alignItems:‘center’,justifyContent:‘center’,gap:16,padding:20}}>
+<div style={{fontFamily:“Cinzel,serif”,fontSize:14,color:’#d4af37’,letterSpacing:2,textAlign:‘center’}}>Your story is ready!</div>
+<iframe srcDoc={htmlContent} style={{width:‘100%’,maxWidth:700,height:‘60vh’,border:‘none’,borderRadius:8,background:‘white’}} title=“Print Preview”/>
+<div style={{display:‘flex’,gap:12,flexWrap:‘wrap’,justifyContent:‘center’}}>
+<button className=“pb-btn-p” onClick={()=>{
+const blob = new Blob([htmlContent], {type:‘text/html’});
+const url = URL.createObjectURL(blob);
+const a = document.createElement(‘a’);
+a.href = url;
+a.download = (story.storyTitle||‘MyStory’).replace(/[ ]+/g,’-’) + ‘.html’;
+a.click();
+URL.revokeObjectURL(url);
+}}>Download</button>
+<button className=“pb-btn-s” onClick={()=>{
+const iframe = document.querySelector(‘iframe[title=“Print Preview”]’);
+if(iframe){iframe.contentWindow.focus();iframe.contentWindow.print();}
+}}>Print / Save PDF</button>
+<button className="pb-btn-s" onClick={onClose}>Close</button>
+</div>
+</div>
+);
 }
 
 function FlipBook({ story, onClose, onPrint }) {
