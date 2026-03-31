@@ -245,7 +245,7 @@ const coverBg = coverImg
 ? “linear-gradient(to bottom,rgba(6,4,15,.2),rgba(6,4,15,.75)),url(” + coverImg.src + “) center/cover no-repeat”
 : “#2d1b69”;
 const printCSS = [
-“@media print{.no-print{display:none!important}.print-cover{page-break-after:always}.print-page{page-break-after:always;page-break-inside:avoid}}”,
+“@media print{.no-print{display:none!important}.pb{display:none!important}.fb{display:none!important}body{background:white!important}.print-cover{page-break-after:always}.print-page{page-break-after:always;page-break-inside:avoid}}”,
 “.print-cover{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;color:white}”,
 “.print-cover h1{font-size:36px;color:#d4af37;margin-bottom:12px}”,
 “.print-cover hr{width:80px;border:1px solid #d4af37;margin:16px auto}”,
