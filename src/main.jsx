@@ -241,15 +241,13 @@ return new Date(ts).toLocaleDateString(“en-US”,{month:“short”,day:“num
 function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
 const coverImg = imgs.find(function(i){return i.id===story.coverImageId;}) || imgs[0];
-const coverBg = coverImg
-? “linear-gradient(to bottom,rgba(6,4,15,.2),rgba(6,4,15,.75)),url(” + coverImg.src + “) center/cover no-repeat”
-: “#2d1b69”;
+const coverBg = “white”;
 const printCSS = [
 “@media print{.no-print{display:none!important}.pb{display:none!important}.fb{display:none!important}body{background:white!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.print-cover{page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}.print-page{page-break-after:always;page-break-inside:avoid}}”,
 “.print-cover{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;color:white;background:#2d1b69}”,
-“.print-cover h1{font-size:36px;color:#d4af37;margin-bottom:12px}”,
+“.print-cover h1{font-size:36px;color:#2d1b69;margin-bottom:12px}”,
 “.print-cover hr{width:80px;border:1px solid #d4af37;margin:16px auto}”,
-“.print-cover p{font-size:18px;color:rgba(255,255,255,.7);font-style:italic}”,
+“.print-cover p{font-size:18px;color:#666;font-style:italic;margin-top:8px}”,
 “.print-page{background:white;padding:0}”,
 “.print-page img{width:100%;height:50vh;object-fit:contain;display:block;background:#f9f9f9}”,
 “.story-text{padding:20px 32px;font-size:16px;line-height:1.8;color:#222;text-align:center}”,
