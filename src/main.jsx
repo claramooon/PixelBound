@@ -259,7 +259,7 @@ const printCSS = [
 “.print-end p{font-size:13px;color:#aaa;margin-top:12px;letter-spacing:3px}”,
 ].join(” “);
 return (
-<div style={{position:“fixed”,inset:0,background:“white”,zIndex:9999,overflowY:“auto”,fontFamily:“Georgia,serif”}}>
+<div style={{position:“relative”,background:“white”,fontFamily:“Georgia,serif”,minHeight:“100vh”}}>
 <style dangerouslySetInnerHTML={{__html: printCSS}} />
 <div className=“no-print” style={{position:“sticky”,top:0,background:“rgba(255,255,255,.95)”,padding:“12px 20px”,display:“flex”,gap:12,justifyContent:“center”,borderBottom:“1px solid #eee”,zIndex:10}}>
 <button onClick={()=>window.print()} style={{background:”#2d1b69”,color:“white”,border:“none”,borderRadius:8,padding:“10px 24px”,fontFamily:“Georgia,serif”,fontSize:14,cursor:“pointer”}}>Print / Save as PDF</button>
