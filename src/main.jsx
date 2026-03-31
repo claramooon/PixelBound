@@ -244,7 +244,7 @@ const coverImg = imgs.find(function(i){return i.id===story.coverImageId;}) || im
 const coverBg = “white”;
 const printCSS = [
 “@media print{.no-print{display:none!important}.pb{display:none!important}.fb{display:none!important}body{background:white!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.print-cover{page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}.print-page{page-break-after:always;page-break-inside:avoid}}”,
-“.print-cover{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;color:white;background:#2d1b69}”,
+“.print-cover{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 40px;color:#222;background:white}”,
 “.print-cover h1{font-size:36px;color:#2d1b69;margin-bottom:12px}”,
 “.print-cover hr{width:80px;border:1px solid #d4af37;margin:16px auto}”,
 “.print-cover p{font-size:18px;color:#666;font-style:italic;margin-top:8px}”,
@@ -263,13 +263,11 @@ return (
 <button onClick={()=>window.print()} style={{background:”#2d1b69”,color:“white”,border:“none”,borderRadius:8,padding:“10px 24px”,fontFamily:“Georgia,serif”,fontSize:14,cursor:“pointer”}}>Print / Save as PDF</button>
 <button onClick={onClose} style={{background:“transparent”,color:”#666”,border:“1px solid #ccc”,borderRadius:8,padding:“10px 24px”,fontFamily:“Georgia,serif”,fontSize:14,cursor:“pointer”}}>Close</button>
 </div>
-<div className=“print-cover” style={{position:“relative”,overflow:“hidden”}}>
-{coverImg && <img src={coverImg.src} style={{position:“absolute”,inset:0,width:“100%”,height:“100%”,objectFit:“cover”,opacity:0.4}} alt=””/>}
-<div style={{position:“relative”,zIndex:1}}>
+<div className="print-cover">
 <h1>{story.storyTitle || “My Story”}</h1>
 <hr/>
 {story.authorName && <p>{“by “ + story.authorName}</p>}
-</div>
+<p style={{fontSize:13,color:”#aaa”,marginTop:16,letterSpacing:2}}>{new Date(story.createdAt).toLocaleDateString(“en-US”,{month:“long”,day:“numeric”,year:“numeric”})}</p>
 </div>
 {imgs.map(function(img, idx) {
 return (
