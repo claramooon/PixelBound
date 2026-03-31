@@ -246,7 +246,7 @@ const coverBg = coverImg
 : “#2d1b69”;
 const printCSS = [
 “@media print{.no-print{display:none!important}.pb{display:none!important}.fb{display:none!important}body{background:white!important}.print-cover{page-break-after:always}.print-page{page-break-after:always;page-break-inside:avoid}}”,
-“.print-cover{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;color:white}”,
+“.print-cover{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px;color:white;background:#2d1b69}”,
 “.print-cover h1{font-size:36px;color:#d4af37;margin-bottom:12px}”,
 “.print-cover hr{width:80px;border:1px solid #d4af37;margin:16px auto}”,
 “.print-cover p{font-size:18px;color:rgba(255,255,255,.7);font-style:italic}”,
@@ -265,10 +265,13 @@ return (
 <button onClick={()=>window.print()} style={{background:”#2d1b69”,color:“white”,border:“none”,borderRadius:8,padding:“10px 24px”,fontFamily:“Georgia,serif”,fontSize:14,cursor:“pointer”}}>Print / Save as PDF</button>
 <button onClick={onClose} style={{background:“transparent”,color:”#666”,border:“1px solid #ccc”,borderRadius:8,padding:“10px 24px”,fontFamily:“Georgia,serif”,fontSize:14,cursor:“pointer”}}>Close</button>
 </div>
-<div className="print-cover" style={{background:coverBg}}>
+<div className=“print-cover” style={{position:“relative”,overflow:“hidden”}}>
+{coverImg && <img src={coverImg.src} style={{position:“absolute”,inset:0,width:“100%”,height:“100%”,objectFit:“cover”,opacity:0.4}} alt=””/>}
+<div style={{position:“relative”,zIndex:1}}>
 <h1>{story.storyTitle || “My Story”}</h1>
 <hr/>
 {story.authorName && <p>{“by “ + story.authorName}</p>}
+</div>
 </div>
 {imgs.map(function(img, idx) {
 return (
