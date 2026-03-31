@@ -351,7 +351,7 @@ if (!animating) return “fb-page current”;
 return dir===‘next’ ? “fb-page slide-out-left” : “fb-page slide-out-right”;
 }
 
-const label = current===0 ? “Cover” : current===total-1 ? “The End” : `Page ${current} of ${imgs.length}`;
+const label = current===0 ? “Cover” : current===total-1 ? “The End” : “Page “ + current + “ of “ + imgs.length;
 const showDots = total <= 12;
 
 return (
@@ -363,11 +363,11 @@ return (
 <div className="fb-pg-count">{label}</div>
 </div>
 <div className="fb-viewport">
-<div className={currentClass()} key={`cur-${current}`}>
+<div className={currentClass()} key={“cur-”+current}>
 {renderPage(current)}
 </div>
 {animating && incoming !== null && (
-<IncomingPage key={`inc-${incoming}`} dir={dir} render={() => renderPage(incoming)} />
+<IncomingPage key={“inc-”+incoming} dir={dir} render={() => renderPage(incoming)} />
 )}
 </div>
 <div className="fb-nav">
@@ -375,7 +375,7 @@ return (
 {showDots ? (
 <div className="fb-dots">
 {Array.from({length:total}).map((_,i)=>(
-<div key={i} className={`fb-dot ${i===current?'active':''}`} onClick={()=>goTo(i)} />
+<div key={i} className={“fb-dot “ + (i===current?“active”:””)} onClick={()=>goTo(i)} />
 ))}
 </div>
 ) : (
@@ -456,7 +456,7 @@ return (
 <img src={(s.selectedImages||[]).find(i=>i.id===s.coverImageId)?.src || (s.selectedImages||[])[0]?.src} alt=”” className=“scard-thumb” />
 <div className="scard-body">
 <div className="scard-title">{s.storyTitle||“Untitled Story”}</div>
-<div className="scard-author">{s.authorName?`by ${s.authorName}`:<em>Anonymous</em>}</div>
+<div className="scard-author">{s.authorName?“by “+s.authorName:<em>Anonymous</em>}</div>
 <div className="scard-date">{fmtDate(s.createdAt)}</div>
 <span className="scard-pages">{(s.selectedImages||[]).length} {(s.selectedImages||[]).length===1?“page”:“pages”}</span>
 {s._key!==‘demo’&&<button className=“scard-del” onClick={e=>{e.stopPropagation();setDelTarget(s);}}>🗑 Delete</button>}
@@ -518,7 +518,7 @@ return (
 <>
 <div className="pbs">
 {LABELS.map((lbl,i)=>(
-<div key={i} className={`pbs-item ${i===step?"active":""} ${i<step?"done":""}`}>
+<div key={i} className={“pbs-item “ + (i===step?“active”:””) + “ “ + (i<step?“done”:””)}>
 <div className="pbs-dot">{i<step?“✓”:i+1}</div>
 <div className="pbs-lbl">{lbl}</div>
 </div>
@@ -529,10 +529,10 @@ return (
 <div className="pbt">🌟 Choose Your Scenes</div>
 <div className="pbhint">Pick the magical places your story will visit</div>
 <div className=“pbhint” style={{marginTop:’-16px’,fontSize:12,color:‘rgba(232,213,183,.4)’}}>Don’t worry about the order, you can switch them up later.</div>
-<div className="pbbadge">{selectedImages.length===0?“No scenes chosen yet”:`✦ ${selectedImages.length} scene${selectedImages.length>1?"s":""} chosen ✦`}</div>
+<div className="pbbadge">{selectedImages.length===0?“No scenes chosen yet”:“✦ “ + selectedImages.length + “ scene” + (selectedImages.length>1?“s”:””) + “ chosen ✦”}</div>
 <div className="pbgrid">
 {STORY_IMAGES.map(img=>(
-<div key={img.id} className={`pbimg-card ${isSel(img.id)?"sel":""}`} onClick={()=>toggleImage(img)}>
+<div key={img.id} className={“pbimg-card “ + (isSel(img.id)?“sel”:””)} onClick={()=>toggleImage(img)}>
 <img src={img.src} alt={img.label}/>
 {isSel(img.id)&&<div className="pbcheck">✓</div>}
 </div>
@@ -553,9 +553,9 @@ return (
 <div key={img.id} className="pbai">
 <img src={img.src} alt={img.label} className=“pbath” style={{boxShadow:isCover?“0 0 0 2px #d4af37”:undefined}}/>
 <div className="pbai-info">
-<div className="pbai-prev">{pages[img.id]?`"${pages[img.id].slice(0,65)}${pages[img.id].length>65?"...":""}"`:“No text yet”}</div>
+<div className="pbai-prev">{pages[img.id]?’”’+ pages[img.id].slice(0,65)+(pages[img.id].length>65?”…”:””) +’”’:“No text yet”}</div>
 </div>
-<button className={`pbcover-btn${isCover?" active":""}`} onClick={()=>setCoverImageId(img.id)} title=“Set as cover”>
+<button className={“pbcover-btn” + (isCover?” active”:””)} onClick={()=>setCoverImageId(img.id)} title=“Set as cover”>
 {isCover?“★ Cover”:“☆ Cover”}
 </button>
 <div style={{fontFamily:”‘Cinzel’,serif”,fontSize:11,color:“rgba(212,175,55,.45)”,paddingRight:4}}>{idx+1}</div>
