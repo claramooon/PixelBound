@@ -247,13 +247,13 @@ const style = document.createElement(“style”);
 style.id = “pixelbound-print-css”;
 style.innerHTML = [
 “@media print{”,
-“.pb,.fb,.pb-print-buttons{display:none!important}”,
-“.pb-print-cover{page-break-after:always!important}”,
-“.pb-print-page{page-break-after:always!important;page-break-inside:avoid!important}”,
-“.pb-print-wrap{display:block!important}”,
+“html,body{background:white!important}”,
+“.pb{display:none!important;visibility:hidden!important}”,
+“.fb{display:none!important;visibility:hidden!important}”,
+“.pb-print-wrap{display:block!important;visibility:visible!important}”,
+“.pb-print-cover{page-break-after:always!important;display:flex!important}”,
+“.pb-print-page{page-break-after:always!important;page-break-inside:avoid!important;display:block!important}”,
 “}”,
-].join(””);
-document.head.appendChild(style);
 // Trigger print immediately
 window.print();
 // After print dialog closes, clean up and go back
