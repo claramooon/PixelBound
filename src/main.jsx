@@ -240,47 +240,56 @@ return new Date(ts).toLocaleDateString(“en-US”,{month:“short”,day:“num
 
 function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
-const coverImg = imgs.find(function(i){return i.id===story.coverImageId;}) || imgs[0];
-const coverBg = “white”;
-const printCSS = [
-“@media print{.no-print{display:none!important}.pb{display:none!important}.fb{display:none!important}body{background:white!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.print-cover{page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}.print-page{page-break-after:always;page-break-inside:avoid}}”,
-“.print-cover{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 40px;color:#222;background:white}”,
-“.print-cover h1{font-size:36px;color:#2d1b69;margin-bottom:12px}”,
-“.print-cover hr{width:80px;border:1px solid #d4af37;margin:16px auto}”,
-“.print-cover p{font-size:18px;color:#666;font-style:italic;margin-top:8px}”,
-“.print-page{background:white;padding:0}”,
-“.print-page img{width:100%;height:50vh;object-fit:contain;display:block;background:#f9f9f9}”,
-“.story-text{padding:20px 32px;font-size:16px;line-height:1.8;color:#222;text-align:center}”,
-“.page-num{text-align:center;font-size:10px;color:#aaa;padding:8px;letter-spacing:2px}”,
-“.print-end{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:white}”,
-“.print-end h2{font-size:48px;color:#2d1b69;letter-spacing:8px}”,
-“.print-end p{font-size:13px;color:#aaa;margin-top:12px;letter-spacing:3px}”,
-].join(” “);
+
+useEffect(() => {
+// Inject print CSS into the main document
+const style = document.createElement(“style”);
+style.id = “pixelbound-print-css”;
+style.innerHTML = [
+“@media print{”,
+“.pb,.fb,.pb-print-buttons{display:none!important}”,
+“.pb-print-cover{page-break-after:always!important}”,
+“.pb-print-page{page-break-after:always!important;page-break-inside:avoid!important}”,
+“.pb-print-wrap{display:block!important}”,
+“}”,
+].join(””);
+document.head.appendChild(style);
+// Trigger print immediately
+window.print();
+// After print dialog closes, clean up and go back
+const cleanup = () => {
+const s = document.getElementById(“pixelbound-print-css”);
+if (s) s.remove();
+onClose();
+};
+window.addEventListener(“afterprint”, cleanup, {once: true});
+return () => {
+const s = document.getElementById(“pixelbound-print-css”);
+if (s) s.remove();
+window.removeEventListener(“afterprint”, cleanup);
+};
+}, []);
+
 return (
-<div style={{position:“relative”,background:“white”,fontFamily:“Georgia,serif”,minHeight:“100vh”}}>
-<style dangerouslySetInnerHTML={{__html: printCSS}} />
-<div className="print-cover">
-<h1>{story.storyTitle || “My Story”}</h1>
-<hr/>
-{story.authorName && <p>{“by “ + story.authorName}</p>}
+<div className=“pb-print-wrap” style={{display:“none”}}>
+<div className=“pb-print-cover” style={{minHeight:“100vh”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,padding:“60px 40px”,background:“white”,fontFamily:“Georgia,serif”}}>
+<h1 style={{fontSize:36,color:”#2d1b69”,marginBottom:12}}>{story.storyTitle || “My Story”}</h1>
+<hr style={{width:80,border:“1px solid #d4af37”,margin:“16px auto”}}/>
+{story.authorName && <p style={{fontSize:18,color:”#666”,fontStyle:“italic”}}>{story.authorName}</p>}
 <p style={{fontSize:13,color:”#aaa”,marginTop:16,letterSpacing:2}}>{new Date(story.createdAt).toLocaleDateString(“en-US”,{month:“long”,day:“numeric”,year:“numeric”})}</p>
 </div>
 {imgs.map(function(img, idx) {
 return (
-<div className="print-page" key={img.id}>
-<img src={img.src} alt={img.label}/>
-<div className="story-text">{(story.pages||{})[img.id]||””}</div>
-<div className="page-num">{”- “ + (idx+1) + “ -”}</div>
+<div className=“pb-print-page” key={img.id} style={{background:“white”,fontFamily:“Georgia,serif”,pageBreakAfter:“always”}}>
+<img src={img.src} alt=”” style={{width:“100%”,height:“50vh”,objectFit:“contain”,display:“block”,background:”#f9f9f9”}}/>
+<div style={{padding:“20px 32px”,fontSize:16,lineHeight:1.8,color:”#222”,textAlign:“center”}}>{(story.pages||{})[img.id]||””}</div>
+<div style={{textAlign:“center”,fontSize:10,color:”#aaa”,padding:8,letterSpacing:2}}>{”- “ + (idx+1) + “ -”}</div>
 </div>
 );
 })}
-<div className="print-end">
-<h2>The End</h2>
-<p>{”* “ + (story.storyTitle||””) + “ *”}</p>
-<div className=“no-print” style={{position:“sticky”,top:0,background:“rgba(255,255,255,.95)”,padding:“12px 20px”,display:“flex”,gap:12,justifyContent:“center”,borderBottom:“1px solid #eee”,zIndex:10}}>
-<button onClick={()=>window.print()} style={{background:”#2d1b69”,color:“white”,border:“none”,borderRadius:8,padding:“10px 24px”,fontFamily:“Georgia,serif”,fontSize:14,cursor:“pointer”}}>Print / Save as PDF</button>
-<button onClick={onClose} style={{background:“transparent”,color:”#666”,border:“1px solid #ccc”,borderRadius:8,padding:“10px 24px”,fontFamily:“Georgia,serif”,fontSize:14,cursor:“pointer”}}>Close</button>
-</div>
+<div style={{minHeight:“100vh”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,background:“white”,fontFamily:“Georgia,serif”}}>
+<h2 style={{fontSize:48,color:”#2d1b69”,letterSpacing:8}}>The End</h2>
+<p style={{fontSize:13,color:”#aaa”,marginTop:12,letterSpacing:3}}>{”* “ + (story.storyTitle||””) + “ *”}</p>
 </div>
 </div>
 );
