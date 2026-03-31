@@ -259,10 +259,6 @@ const printCSS = [
 return (
 <div style={{position:“relative”,background:“white”,fontFamily:“Georgia,serif”,minHeight:“100vh”}}>
 <style dangerouslySetInnerHTML={{__html: printCSS}} />
-<div className=“no-print” style={{position:“sticky”,top:0,background:“rgba(255,255,255,.95)”,padding:“12px 20px”,display:“flex”,gap:12,justifyContent:“center”,borderBottom:“1px solid #eee”,zIndex:10}}>
-<button onClick={()=>window.print()} style={{background:”#2d1b69”,color:“white”,border:“none”,borderRadius:8,padding:“10px 24px”,fontFamily:“Georgia,serif”,fontSize:14,cursor:“pointer”}}>Print / Save as PDF</button>
-<button onClick={onClose} style={{background:“transparent”,color:”#666”,border:“1px solid #ccc”,borderRadius:8,padding:“10px 24px”,fontFamily:“Georgia,serif”,fontSize:14,cursor:“pointer”}}>Close</button>
-</div>
 <div className="print-cover">
 <h1>{story.storyTitle || “My Story”}</h1>
 <hr/>
@@ -281,6 +277,10 @@ return (
 <div className="print-end">
 <h2>The End</h2>
 <p>{”* “ + (story.storyTitle||””) + “ *”}</p>
+<div className=“no-print” style={{position:“sticky”,top:0,background:“rgba(255,255,255,.95)”,padding:“12px 20px”,display:“flex”,gap:12,justifyContent:“center”,borderBottom:“1px solid #eee”,zIndex:10}}>
+<button onClick={()=>window.print()} style={{background:”#2d1b69”,color:“white”,border:“none”,borderRadius:8,padding:“10px 24px”,fontFamily:“Georgia,serif”,fontSize:14,cursor:“pointer”}}>Print / Save as PDF</button>
+<button onClick={onClose} style={{background:“transparent”,color:”#666”,border:“1px solid #ccc”,borderRadius:8,padding:“10px 24px”,fontFamily:“Georgia,serif”,fontSize:14,cursor:“pointer”}}>Close</button>
+</div>
 </div>
 </div>
 );
