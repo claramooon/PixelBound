@@ -254,7 +254,7 @@ style.innerHTML = [
 “.pb-print-cover{page-break-after:always!important;display:flex!important}”,
 “.pb-print-page{page-break-after:always!important;page-break-inside:avoid!important;display:block!important}”,
 “}”,
-// Trigger print immediately
+].join(””);
 window.print();
 // After print dialog closes, clean up and go back
 const cleanup = () => {
