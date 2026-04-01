@@ -241,12 +241,37 @@ function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
 
 useEffect(() => {
-const timer = setTimeout(() => {
-window.print();
-const fallback = setTimeout(onClose, 5000);
-window.addEventListener(“afterprint”, () => { clearTimeout(fallback); onClose(); }, { once: true });
-}, 500);
-return () => clearTimeout(timer);
+const imgs = Array.from(document.querySelectorAll(”.pb-print-wrap img”));
+let loaded = 0;
+
+```
+function tryPrint() {
+  loaded++;
+  if (loaded >= imgs.length) {
+    window.print();
+  }
+}
+
+if (imgs.length === 0) {
+  window.print();
+} else {
+  imgs.forEach(function(img) {
+    if (img.complete) {
+      tryPrint();
+    } else {
+      img.addEventListener("load", tryPrint);
+      img.addEventListener("error", tryPrint);
+    }
+  });
+}
+
+const cleanup = function() { onClose(); };
+const fallback = setTimeout(cleanup, 15000);
+window.addEventListener("afterprint", function() { clearTimeout(fallback); onClose(); }, { once: true });
+
+return function() { clearTimeout(fallback); };
+```
+
 }, []);
 
 return (
