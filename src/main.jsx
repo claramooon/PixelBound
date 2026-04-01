@@ -233,21 +233,42 @@ function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
 
 useEffect(() => {
-const style = document.createElement(“style”);
-style.id = “pb-print-style”;
+// Remove any leftover style from previous print
+const existing = document.getElementById(“pb-print-style”);
+if (existing) existing.remove();
+
+```
+const style = document.createElement("style");
+style.id = "pb-print-style";
 style.innerHTML =
-“@media print{” +
-“.pb{display:none!important}” +
-“.fb{display:none!important}” +
-“.pb-print-wrap{display:block!important}” +
-“.pb-print-page{page-break-after:always;page-break-inside:avoid}” +
-“.pb-print-cover{page-break-after:always}” +
-“}”;
+  "@media print{" +
+  ".pb{display:none!important}" +
+  ".fb{display:none!important}" +
+  ".pb-print-wrap{display:block!important}" +
+  ".pb-print-page{page-break-after:always;page-break-inside:avoid}" +
+  ".pb-print-cover{page-break-after:always}" +
+  "}";
 document.head.appendChild(style);
-window.print();
-const cleanup = () => { style.remove(); onClose(); };
-window.addEventListener(“afterprint”, cleanup, { once: true });
-return () => { style.remove(); window.removeEventListener(“afterprint”, cleanup); };
+
+const timer = setTimeout(() => {
+  window.print();
+  // Use both afterprint and a timeout fallback since afterprint is unreliable on iPad
+  const cleanup = () => {
+    clearTimeout(fallback);
+    style.remove();
+    onClose();
+  };
+  const fallback = setTimeout(cleanup, 3000);
+  window.addEventListener("afterprint", cleanup, { once: true });
+}, 200);
+
+return () => {
+  clearTimeout(timer);
+  const s = document.getElementById("pb-print-style");
+  if (s) s.remove();
+};
+```
+
 }, []);
 
 return (
