@@ -238,200 +238,70 @@ return new Date(ts).toLocaleDateString(“en-US”,{month:“short”,day:“num
 }
 
 function PrintBook({ story, onClose }) {
-  const imgs = story.selectedImages || [];
+const imgs = story.selectedImages || [];
 
-  useEffect(() => {
-    const printWrap = document.querySelector(".pb-print-wrap");
-    const app = document.querySelector(".pb");
+useEffect(() => {
+const printWrap = document.querySelector(”.pb-print-wrap”);
+const app = document.querySelector(”.pb”);
 
-    // 1. Make print wrapper visible immediately
-    if (printWrap) {
-      printWrap.style.visibility = "visible";
-      printWrap.style.position = "static";
-    }
+```
+if (printWrap) {
+  printWrap.style.visibility = "visible";
+  printWrap.style.position = "static";
+}
+if (app) app.style.display = "none";
 
-    // 2. Hide the app
-    if (app) app.style.display = "none";
+// Force reflow so browser paints the wrapper
+if (printWrap) { void printWrap.offsetHeight; }
 
-    // 3. Force a reflow so the browser *paints* the wrapper
-    void printWrap?.offsetHeight;
+const images = printWrap ? Array.from(printWrap.querySelectorAll("img")) : [];
+let loaded = 0;
 
-    // 4. Wait for all images to load
-    const images = Array.from(printWrap.querySelectorAll("img"));
-    let loaded = 0;
-
-    function tryPrint() {
-      loaded++;
-      if (loaded >= images.length) {
-        window.print();
-      }
-    }
-
-    if (images.length === 0) {
-      window.print();
-    } else {
-      images.forEach(img => {
-        if (img.complete) {
-          tryPrint();
-        } else {
-          img.addEventListener("load", tryPrint);
-          img.addEventListener("error", tryPrint);
-        }
-      });
-    }
-
-    // 5. Cleanup after printing
-    const cleanup = () => {
-      if (app) app.style.display = "";
-      if (printWrap) {
-        printWrap.style.visibility = "hidden";
-        printWrap.style.position = "absolute";
-      }
-      onClose();
-    };
-
-    const fallback = setTimeout(cleanup, 15000);
-
-    window.addEventListener(
-      "afterprint",
-      () => {
-        clearTimeout(fallback);
-        cleanup();
-      },
-      { once: true }
-    );
-
-    return () => {
-      clearTimeout(fallback);
-      if (app) app.style.display = "";
-      if (printWrap) {
-        printWrap.style.visibility = "hidden";
-        printWrap.style.position = "absolute";
-      }
-    };
-  }, []);
-
-  return (
-    <div
-      className="pb-print-wrap"
-      style={{
-        visibility: "hidden",
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        background: "white",
-        fontFamily: "Georgia, serif"
-      }}
-    >
-      {/* COVER */}
-      <div
-        style={{
-          padding: "60px 40px",
-          textAlign: "center",
-          pageBreakAfter: "always"
-        }}
-      >
-        <h1 style={{ fontSize: 36, color: "#2d1b69", marginBottom: 12 }}>
-          {story.storyTitle || "My Story"}
-        </h1>
-        <hr
-          style={{
-            width: 80,
-            border: "1px solid #d4af37",
-            margin: "16px auto"
-          }}
-        />
-        {story.authorName && (
-          <p style={{ fontSize: 18, color: "#666", fontStyle: "italic" }}>
-            {story.authorName}
-          </p>
-        )}
-        <p style={{ fontSize: 13, color: "#aaa", marginTop: 16 }}>
-          {new Date(story.createdAt).toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric"
-          })}
-        </p>
-      </div>
-
-      {/* PAGES */}
-      {imgs.map((img, idx) => (
-        <div
-          key={img.id}
-          style={{
-            background: "white",
-            pageBreakAfter: "always",
-            pageBreakInside: "avoid"
-          }}
-        >
-          <img
-            src={img.src}
-            alt=""
-            style={{
-              width: "100%",
-              height: "50vh",
-              objectFit: "contain",
-              display: "block",
-              background: "#f9f9f9"
-            }}
-          />
-          <div
-            style={{
-              padding: "20px 32px",
-              fontSize: 16,
-              lineHeight: 1.8,
-              color: "#222",
-              textAlign: "center"
-            }}
-          >
-            {(story.pages || {})[img.id] || ""}
-          </div>
-          <div
-            style={{
-              textAlign: "center",
-              fontSize: 10,
-              color: "#aaa",
-              padding: 8
-            }}
-          >
-            {"- " + (idx + 1) + " -"}
-          </div>
-        </div>
-      ))}
-
-      {/* END PAGE */}
-      <div
-        style={{
-          padding: "60px 40px",
-          textAlign: "center",
-          background: "white"
-        }}
-      >
-        <h2 style={{ fontSize: 48, color: "#2d1b69", letterSpacing: 8 }}>
-          The End
-        </h2>
-        <p
-          style={{
-            fontSize: 13,
-            color: "#aaa",
-            marginTop: 12,
-            letterSpacing: 3
-          }}
-        >
-          {"* " + (story.storyTitle || "") + " *"}
-        </p>
-      </div>
-    </div>
-  );
+function tryPrint() {
+  loaded++;
+  if (loaded >= images.length) window.print();
 }
 
-  
+if (images.length === 0) {
+  window.print();
+} else {
+  images.forEach(function(img) {
+    if (img.complete) {
+      tryPrint();
+    } else {
+      img.addEventListener("load", tryPrint);
+      img.addEventListener("error", tryPrint);
+    }
+  });
+}
+
+function cleanup() {
+  if (app) app.style.display = "";
+  if (printWrap) {
+    printWrap.style.visibility = "hidden";
+    printWrap.style.position = "absolute";
+  }
+  onClose();
+}
+
+const fallback = setTimeout(cleanup, 15000);
+window.addEventListener("afterprint", function() { clearTimeout(fallback); cleanup(); }, { once: true });
+
+return function() {
+  clearTimeout(fallback);
+  if (app) app.style.display = "";
+  if (printWrap) {
+    printWrap.style.visibility = "hidden";
+    printWrap.style.position = "absolute";
+  }
+};
+```
+
+}, []);
 
 return (
-<div className=“pb-print-wrap” style={{position:“absolute”,left:”-9999px”,top:0,width:“210mm”,background:“white”,fontFamily:“Georgia,serif”}}>
-<div style={{display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,padding:“60px 40px”,pageBreakAfter:“always”,minHeight:“auto”}}>
+<div className=“pb-print-wrap” style={{visibility:“hidden”,position:“absolute”,top:0,left:0,width:“100%”,background:“white”,fontFamily:“Georgia,serif”}}>
+<div style={{padding:“60px 40px”,textAlign:“center”,pageBreakAfter:“always”}}>
 <h1 style={{fontSize:36,color:”#2d1b69”,marginBottom:12}}>{story.storyTitle || “My Story”}</h1>
 <hr style={{width:80,border:“1px solid #d4af37”,margin:“16px auto”}}/>
 {story.authorName && <p style={{fontSize:18,color:”#666”,fontStyle:“italic”}}>{story.authorName}</p>}
@@ -446,7 +316,7 @@ return (
 </div>
 );
 })}
-<div style={{minHeight:“auto”,padding:“60px 40px”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,background:“white”}}>
+<div style={{padding:“60px 40px”,textAlign:“center”,background:“white”}}>
 <h2 style={{fontSize:48,color:”#2d1b69”,letterSpacing:8}}>The End</h2>
 <p style={{fontSize:13,color:”#aaa”,marginTop:12,letterSpacing:3}}>{”* “+(story.storyTitle||””)+” *”}</p>
 </div>
