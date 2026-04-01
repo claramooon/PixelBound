@@ -237,17 +237,36 @@ function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
 
 useEffect(() => {
+// Hide the app, show print content, then print
+const appEl = document.querySelector(”.pb”);
+if (appEl) appEl.style.display = “none”;
+document.body.style.background = “white”;
+
+```
 const timer = setTimeout(() => {
-window.print();
-const fallback = setTimeout(onClose, 5000);
-window.addEventListener(“afterprint”, () => { clearTimeout(fallback); onClose(); }, { once: true });
-}, 600);
-return () => clearTimeout(timer);
+  window.print();
+  const fallback = setTimeout(cleanup, 5000);
+  window.addEventListener("afterprint", () => { clearTimeout(fallback); cleanup(); }, { once: true });
+}, 500);
+
+function cleanup() {
+  if (appEl) appEl.style.display = "";
+  document.body.style.background = "";
+  onClose();
+}
+
+return () => {
+  clearTimeout(timer);
+  if (appEl) appEl.style.display = "";
+  document.body.style.background = "";
+};
+```
+
 }, []);
 
 return (
-<div className=“pb-print-wrap” style={{position:“fixed”,inset:0,zIndex:99999,background:“white”,overflowY:“auto”,fontFamily:“Georgia,serif”}}>
-<div className=“pb-print-cover” style={{minHeight:“100vh”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,padding:“60px 40px”,background:“white”}}>
+<div style={{background:“white”,fontFamily:“Georgia,serif”,minHeight:“100vh”}}>
+<div style={{minHeight:“100vh”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,padding:“60px 40px”,pageBreakAfter:“always”}}>
 <h1 style={{fontSize:36,color:”#2d1b69”,marginBottom:12}}>{story.storyTitle || “My Story”}</h1>
 <hr style={{width:80,border:“1px solid #d4af37”,margin:“16px auto”}}/>
 {story.authorName && <p style={{fontSize:18,color:”#666”,fontStyle:“italic”}}>{story.authorName}</p>}
@@ -255,7 +274,7 @@ return (
 </div>
 {imgs.map(function(img, idx) {
 return (
-<div className=“pb-print-page” key={img.id} style={{background:“white”}}>
+<div key={img.id} style={{background:“white”,pageBreakAfter:“always”,pageBreakInside:“avoid”}}>
 <img src={img.src} alt=”” style={{width:“100%”,height:“50vh”,objectFit:“contain”,display:“block”,background:”#f9f9f9”}}/>
 <div style={{padding:“20px 32px”,fontSize:16,lineHeight:1.8,color:”#222”,textAlign:“center”}}>{(story.pages||{})[img.id]||””}</div>
 <div style={{textAlign:“center”,fontSize:10,color:”#aaa”,padding:8}}>{”- “+(idx+1)+” -”}</div>
