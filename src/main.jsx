@@ -244,11 +244,19 @@ function PrintBook({ story, onClose }) {
     const printWrap = document.querySelector(".pb-print-wrap");
     const app = document.querySelector(".pb");
 
-    // Show print content, hide app
-    if (printWrap) printWrap.style.visibility = "visible";
+    // 1. Make print wrapper visible immediately
+    if (printWrap) {
+      printWrap.style.visibility = "visible";
+      printWrap.style.position = "static";
+    }
+
+    // 2. Hide the app
     if (app) app.style.display = "none";
 
-    // Wait for all images to load
+    // 3. Force a reflow so the browser *paints* the wrapper
+    void printWrap?.offsetHeight;
+
+    // 4. Wait for all images to load
     const images = Array.from(printWrap.querySelectorAll("img"));
     let loaded = 0;
 
@@ -272,25 +280,152 @@ function PrintBook({ story, onClose }) {
       });
     }
 
-    // Cleanup after printing
+    // 5. Cleanup after printing
     const cleanup = () => {
       if (app) app.style.display = "";
-      if (printWrap) printWrap.style.visibility = "hidden";
+      if (printWrap) {
+        printWrap.style.visibility = "hidden";
+        printWrap.style.position = "absolute";
+      }
       onClose();
     };
 
     const fallback = setTimeout(cleanup, 15000);
-    window.addEventListener("afterprint", () => {
-      clearTimeout(fallback);
-      cleanup();
-    }, { once: true });
+
+    window.addEventListener(
+      "afterprint",
+      () => {
+        clearTimeout(fallback);
+        cleanup();
+      },
+      { once: true }
+    );
 
     return () => {
       clearTimeout(fallback);
       if (app) app.style.display = "";
-      if (printWrap) printWrap.style.visibility = "hidden";
+      if (printWrap) {
+        printWrap.style.visibility = "hidden";
+        printWrap.style.position = "absolute";
+      }
     };
   }, []);
+
+  return (
+    <div
+      className="pb-print-wrap"
+      style={{
+        visibility: "hidden",
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        background: "white",
+        fontFamily: "Georgia, serif"
+      }}
+    >
+      {/* COVER */}
+      <div
+        style={{
+          padding: "60px 40px",
+          textAlign: "center",
+          pageBreakAfter: "always"
+        }}
+      >
+        <h1 style={{ fontSize: 36, color: "#2d1b69", marginBottom: 12 }}>
+          {story.storyTitle || "My Story"}
+        </h1>
+        <hr
+          style={{
+            width: 80,
+            border: "1px solid #d4af37",
+            margin: "16px auto"
+          }}
+        />
+        {story.authorName && (
+          <p style={{ fontSize: 18, color: "#666", fontStyle: "italic" }}>
+            {story.authorName}
+          </p>
+        )}
+        <p style={{ fontSize: 13, color: "#aaa", marginTop: 16 }}>
+          {new Date(story.createdAt).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric"
+          })}
+        </p>
+      </div>
+
+      {/* PAGES */}
+      {imgs.map((img, idx) => (
+        <div
+          key={img.id}
+          style={{
+            background: "white",
+            pageBreakAfter: "always",
+            pageBreakInside: "avoid"
+          }}
+        >
+          <img
+            src={img.src}
+            alt=""
+            style={{
+              width: "100%",
+              height: "50vh",
+              objectFit: "contain",
+              display: "block",
+              background: "#f9f9f9"
+            }}
+          />
+          <div
+            style={{
+              padding: "20px 32px",
+              fontSize: 16,
+              lineHeight: 1.8,
+              color: "#222",
+              textAlign: "center"
+            }}
+          >
+            {(story.pages || {})[img.id] || ""}
+          </div>
+          <div
+            style={{
+              textAlign: "center",
+              fontSize: 10,
+              color: "#aaa",
+              padding: 8
+            }}
+          >
+            {"- " + (idx + 1) + " -"}
+          </div>
+        </div>
+      ))}
+
+      {/* END PAGE */}
+      <div
+        style={{
+          padding: "60px 40px",
+          textAlign: "center",
+          background: "white"
+        }}
+      >
+        <h2 style={{ fontSize: 48, color: "#2d1b69", letterSpacing: 8 }}>
+          The End
+        </h2>
+        <p
+          style={{
+            fontSize: 13,
+            color: "#aaa",
+            marginTop: 12,
+            letterSpacing: 3
+          }}
+        >
+          {"* " + (story.storyTitle || "") + " *"}
+        </p>
+      </div>
+    </div>
+  );
+}
 
   
 
