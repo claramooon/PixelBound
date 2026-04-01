@@ -260,7 +260,7 @@ return (
 </div>
 {imgs.map(function(img, idx) {
 return (
-<div className=“pb-print-page” key={img.id} style={{background:“white”,minHeight:“100vh”}}>
+<div className=“pb-print-page” key={img.id} style={{background:“white”}}>
 <img src={img.src} alt=”” style={{width:“100%”,height:“50vh”,objectFit:“contain”,display:“block”,background:”#f9f9f9”}}/>
 <div style={{padding:“20px 32px”,fontSize:16,lineHeight:1.8,color:”#222”,textAlign:“center”}}>{(story.pages||{})[img.id]||””}</div>
 <div style={{textAlign:“center”,fontSize:10,color:”#aaa”,padding:8}}>{”- “+(idx+1)+” -”}</div>
