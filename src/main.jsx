@@ -202,9 +202,6 @@ const CSS = `
 .fb-story-text{font-size:19px}
 }
 @media print{
-.pb{display:none!important}
-.fb{display:none!important}
-.pb-print-wrap{display:block!important}
 .pb-print-cover{page-break-after:always}
 .pb-print-page{page-break-after:always;page-break-inside:avoid}
 }
@@ -240,15 +237,16 @@ function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
 
 useEffect(() => {
-const timer = setTimeout(() => window.print(), 300);
-const cleanup = () => onClose();
-const fallback = setTimeout(cleanup, 5000);
+const timer = setTimeout(() => {
+window.print();
+const fallback = setTimeout(onClose, 5000);
 window.addEventListener(“afterprint”, () => { clearTimeout(fallback); onClose(); }, { once: true });
-return () => { clearTimeout(timer); clearTimeout(fallback); };
+}, 600);
+return () => clearTimeout(timer);
 }, []);
 
 return (
-<div className=“pb-print-wrap” style={{position:“fixed”,left:”-9999px”,top:0,fontFamily:“Georgia,serif”,background:“white”,width:“210mm”}}>
+<div className=“pb-print-wrap” style={{position:“fixed”,inset:0,zIndex:99999,background:“white”,overflowY:“auto”,fontFamily:“Georgia,serif”}}>
 <div className=“pb-print-cover” style={{minHeight:“100vh”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,padding:“60px 40px”,background:“white”}}>
 <h1 style={{fontSize:36,color:”#2d1b69”,marginBottom:12}}>{story.storyTitle || “My Story”}</h1>
 <hr style={{width:80,border:“1px solid #d4af37”,margin:“16px auto”}}/>
