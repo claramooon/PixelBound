@@ -201,6 +201,13 @@ const CSS = `
 .fb-text-area{flex:1;padding:36px 40px}
 .fb-story-text{font-size:19px}
 }
+@media print{
+.pb{display:none!important}
+.fb{display:none!important}
+.pb-print-wrap{display:block!important}
+.pb-print-cover{page-break-after:always}
+.pb-print-page{page-break-after:always;page-break-inside:avoid}
+}
 @media(max-width:767px){
 .pbgrid{grid-template-columns:repeat(2,1fr)}
 .pbpb{flex-direction:column}
@@ -233,46 +240,15 @@ function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
 
 useEffect(() => {
-// Remove any leftover style from previous print
-const existing = document.getElementById(“pb-print-style”);
-if (existing) existing.remove();
-
-```
-const style = document.createElement("style");
-style.id = "pb-print-style";
-style.innerHTML =
-  "@media print{" +
-  ".pb{display:none!important}" +
-  ".fb{display:none!important}" +
-  ".pb-print-wrap{display:block!important}" +
-  ".pb-print-page{page-break-after:always;page-break-inside:avoid}" +
-  ".pb-print-cover{page-break-after:always}" +
-  "}";
-document.head.appendChild(style);
-
-const timer = setTimeout(() => {
-  window.print();
-  // Use both afterprint and a timeout fallback since afterprint is unreliable on iPad
-  const cleanup = () => {
-    clearTimeout(fallback);
-    style.remove();
-    onClose();
-  };
-  const fallback = setTimeout(cleanup, 3000);
-  window.addEventListener("afterprint", cleanup, { once: true });
-}, 200);
-
-return () => {
-  clearTimeout(timer);
-  const s = document.getElementById("pb-print-style");
-  if (s) s.remove();
-};
-```
-
+const timer = setTimeout(() => window.print(), 300);
+const cleanup = () => onClose();
+const fallback = setTimeout(cleanup, 5000);
+window.addEventListener(“afterprint”, () => { clearTimeout(fallback); onClose(); }, { once: true });
+return () => { clearTimeout(timer); clearTimeout(fallback); };
 }, []);
 
 return (
-<div className=“pb-print-wrap” style={{display:“none”,fontFamily:“Georgia,serif”}}>
+<div className=“pb-print-wrap” style={{position:“fixed”,left:”-9999px”,top:0,fontFamily:“Georgia,serif”,background:“white”,width:“210mm”}}>
 <div className=“pb-print-cover” style={{minHeight:“100vh”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,padding:“60px 40px”,background:“white”}}>
 <h1 style={{fontSize:36,color:”#2d1b69”,marginBottom:12}}>{story.storyTitle || “My Story”}</h1>
 <hr style={{width:80,border:“1px solid #d4af37”,margin:“16px auto”}}/>
