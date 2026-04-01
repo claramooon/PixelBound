@@ -69,8 +69,6 @@ const CSS = `
 
 .home{position:relative;z-index:10;max-width:980px;margin:0 auto;padding:0 24px 80px}
 .hero{text-align:center;padding:64px 20px 52px}
-.hero-eyebrow{font-family:‘Cinzel’,serif;font-size:11px;letter-spacing:6px;color:rgba(212,175,55,.38);text-transform:uppercase;margin-bottom:20px}
-.hero-title{font-family:‘Cinzel’,serif;font-size:clamp(42px,7vw,72px);font-weight:700;color:#d4af37;line-height:1.05;text-shadow:0 0 60px rgba(212,175,55,.25);margin-bottom:18px;letter-spacing:3px}
 .hero-sub{font-style:italic;color:rgba(232,213,183,.55);font-size:15px;line-height:1.75;max-width:420px;margin:0 auto 38px}
 .hero-rule{width:100px;height:1px;background:linear-gradient(90deg,transparent,rgba(212,175,55,.5),transparent);margin:0 auto 38px}
 .hero-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#d4af37 0%,#b8901a 100%);border:none;border-radius:13px;padding:17px 40px;font-family:‘Cinzel’,serif;font-size:13px;letter-spacing:2.5px;color:#0d0a1a;font-weight:700;cursor:pointer;transition:all .28s;text-transform:uppercase;box-shadow:0 6px 28px rgba(212,175,55,.28)}
@@ -88,13 +86,11 @@ const CSS = `
 .scard-author{font-style:italic;color:rgba(232,213,183,.5);font-size:12px;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .scard-date{font-family:‘Cinzel’,serif;font-size:10px;color:rgba(212,175,55,.45);letter-spacing:1px}
 .scard-pages{background:rgba(212,175,55,.09);border:1px solid rgba(212,175,55,.15);border-radius:20px;padding:2px 9px;font-family:‘Cinzel’,serif;font-size:9px;color:rgba(212,175,55,.5);letter-spacing:1px;position:absolute;top:10px;right:10px}
-.scard-read{display:none}
 .scard-del{position:absolute;bottom:10px;right:10px;background:transparent;border:1px solid rgba(200,80,80,.35);border-radius:7px;padding:4px 10px;font-family:‘Cinzel’,serif;font-size:9px;letter-spacing:1px;color:rgba(200,80,80,.6);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;z-index:5;text-transform:uppercase}
 .scard-del:hover{border-color:rgba(200,80,80,.7);color:rgb(200,80,80);background:rgba(200,80,80,.1)}
 .scard-print{position:absolute;top:10px;left:118px;background:transparent;border:1px solid rgba(212,175,55,.35);border-radius:7px;padding:4px 10px;font-family:‘Cinzel’,serif;font-size:9px;letter-spacing:1px;color:rgba(212,175,55,.6);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s;z-index:5;text-transform:uppercase}
 .scard-print:hover{border-color:#d4af37;color:#d4af37;background:rgba(212,175,55,.1)}
 
-.empty{text-align:center;padding:80px 20px;color:rgba(232,213,183,.3)}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(5px)}
 .modal{background:#100d1f;border:1px solid rgba(212,175,55,.28);border-radius:18px;padding:34px 30px;max-width:340px;width:90%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.6)}
 .modal-title{font-family:‘Cinzel’,serif;font-size:15px;color:#d4af37;margin-bottom:10px;letter-spacing:1px}
@@ -187,7 +183,6 @@ const CSS = `
 .fb-dot.active{background:#d4af37;transform:scale(1.3);box-shadow:0 0 8px rgba(212,175,55,.5)}
 .fb-dot:hover:not(.active){background:rgba(212,175,55,.45)}
 
-/* iPad */
 @media(min-width:768px){
 .pbgrid{grid-template-columns:repeat(4,1fr)}
 .pbimg-card img{height:130px}
@@ -201,15 +196,11 @@ const CSS = `
 .pbpages{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .pbcard{padding:44px}
 }
-
-/* iPad landscape */
 @media(min-width:768px) and (orientation:landscape){
 .fb-img{flex:0 0 42%;object-fit:contain;background:#06040f}
 .fb-text-area{flex:1;padding:36px 40px}
 .fb-story-text{font-size:19px}
 }
-
-/* iPhone */
 @media(max-width:767px){
 .pbgrid{grid-template-columns:repeat(2,1fr)}
 .pbpb{flex-direction:column}
@@ -242,54 +233,43 @@ function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
 
 useEffect(() => {
-// Inject print CSS into the main document
 const style = document.createElement(“style”);
-style.id = “pixelbound-print-css”;
-style.innerHTML = [
-“@media print{”,
-“html,body{background:white!important}”,
-“.pb{display:none!important;visibility:hidden!important}”,
-“.fb{display:none!important;visibility:hidden!important}”,
-“.pb-print-wrap{display:block!important;visibility:visible!important}”,
-“.pb-print-cover{page-break-after:always!important;display:flex!important}”,
-“.pb-print-page{page-break-after:always!important;page-break-inside:avoid!important;display:block!important}”,
-“}”,
-].join(””);
+style.id = “pb-print-style”;
+style.innerHTML =
+“@media print{” +
+“.pb{display:none!important}” +
+“.fb{display:none!important}” +
+“.pb-print-wrap{display:block!important}” +
+“.pb-print-page{page-break-after:always;page-break-inside:avoid}” +
+“.pb-print-cover{page-break-after:always}” +
+“}”;
+document.head.appendChild(style);
 window.print();
-// After print dialog closes, clean up and go back
-const cleanup = () => {
-const s = document.getElementById(“pixelbound-print-css”);
-if (s) s.remove();
-onClose();
-};
-window.addEventListener(“afterprint”, cleanup, {once: true});
-return () => {
-const s = document.getElementById(“pixelbound-print-css”);
-if (s) s.remove();
-window.removeEventListener(“afterprint”, cleanup);
-};
+const cleanup = () => { style.remove(); onClose(); };
+window.addEventListener(“afterprint”, cleanup, { once: true });
+return () => { style.remove(); window.removeEventListener(“afterprint”, cleanup); };
 }, []);
 
 return (
-<div className=“pb-print-wrap” style={{display:“none”}}>
-<div className=“pb-print-cover” style={{minHeight:“100vh”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,padding:“60px 40px”,background:“white”,fontFamily:“Georgia,serif”}}>
+<div className=“pb-print-wrap” style={{display:“none”,fontFamily:“Georgia,serif”}}>
+<div className=“pb-print-cover” style={{minHeight:“100vh”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,padding:“60px 40px”,background:“white”}}>
 <h1 style={{fontSize:36,color:”#2d1b69”,marginBottom:12}}>{story.storyTitle || “My Story”}</h1>
 <hr style={{width:80,border:“1px solid #d4af37”,margin:“16px auto”}}/>
 {story.authorName && <p style={{fontSize:18,color:”#666”,fontStyle:“italic”}}>{story.authorName}</p>}
-<p style={{fontSize:13,color:”#aaa”,marginTop:16,letterSpacing:2}}>{new Date(story.createdAt).toLocaleDateString(“en-US”,{month:“long”,day:“numeric”,year:“numeric”})}</p>
+<p style={{fontSize:13,color:”#aaa”,marginTop:16}}>{new Date(story.createdAt).toLocaleDateString(“en-US”,{month:“long”,day:“numeric”,year:“numeric”})}</p>
 </div>
 {imgs.map(function(img, idx) {
 return (
-<div className=“pb-print-page” key={img.id} style={{background:“white”,fontFamily:“Georgia,serif”,pageBreakAfter:“always”}}>
+<div className=“pb-print-page” key={img.id} style={{background:“white”,minHeight:“100vh”}}>
 <img src={img.src} alt=”” style={{width:“100%”,height:“50vh”,objectFit:“contain”,display:“block”,background:”#f9f9f9”}}/>
 <div style={{padding:“20px 32px”,fontSize:16,lineHeight:1.8,color:”#222”,textAlign:“center”}}>{(story.pages||{})[img.id]||””}</div>
-<div style={{textAlign:“center”,fontSize:10,color:”#aaa”,padding:8,letterSpacing:2}}>{”- “ + (idx+1) + “ -”}</div>
+<div style={{textAlign:“center”,fontSize:10,color:”#aaa”,padding:8}}>{”- “+(idx+1)+” -”}</div>
 </div>
 );
 })}
-<div style={{minHeight:“100vh”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,background:“white”,fontFamily:“Georgia,serif”}}>
+<div style={{minHeight:“60vh”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,background:“white”}}>
 <h2 style={{fontSize:48,color:”#2d1b69”,letterSpacing:8}}>The End</h2>
-<p style={{fontSize:13,color:”#aaa”,marginTop:12,letterSpacing:3}}>{”* “ + (story.storyTitle||””) + “ *”}</p>
+<p style={{fontSize:13,color:”#aaa”,marginTop:12,letterSpacing:3}}>{”* “+(story.storyTitle||””)+” *”}</p>
 </div>
 </div>
 );
@@ -334,7 +314,7 @@ function renderPage(pageIdx) {
 if (pageIdx === 0) {
 const coverImg = imgs.find(i=>i.id===story.coverImageId) || imgs[0];
 return (
-<div className=“fb-cover-page” style={coverImg?{background:“linear-gradient(to bottom, rgba(6,4,15,.3) 0%, rgba(6,4,15,.85) 55%, #06040f 100%), url(” + coverImg.src + “) center/cover no-repeat”}:undefined}>
+<div className=“fb-cover-page” style={coverImg?{background:“linear-gradient(to bottom, rgba(6,4,15,.3) 0%, rgba(6,4,15,.85) 55%, #06040f 100%), url(”+coverImg.src+”) center/cover no-repeat”}:undefined}>
 <div className="fb-cover-icon">📖</div>
 <div className="fb-cover-title">{story.storyTitle || “Untitled Story”}</div>
 <div className="fb-cover-rule" />
@@ -370,7 +350,7 @@ if (!animating) return “fb-page current”;
 return dir===‘next’ ? “fb-page slide-out-left” : “fb-page slide-out-right”;
 }
 
-const label = current===0 ? “Cover” : current===total-1 ? “The End” : “Page “ + current + “ of “ + imgs.length;
+const label = current===0 ? “Cover” : current===total-1 ? “The End” : “Page “+current+” of “+imgs.length;
 const showDots = total <= 12;
 
 return (
@@ -394,11 +374,11 @@ return (
 {showDots ? (
 <div className="fb-dots">
 {Array.from({length:total}).map((_,i)=>(
-<div key={i} className={“fb-dot “ + (i===current?“active”:””)} onClick={()=>goTo(i)} />
+<div key={i} className={“fb-dot “+(i===current?“active”:””)} onClick={()=>goTo(i)} />
 ))}
 </div>
 ) : (
-<div style={{flex:1,textAlign:‘center’,fontFamily:”‘Cinzel’,serif”,fontSize:10,letterSpacing:3,color:“rgba(212,175,55,.3)”}}>{label}</div>
+<div style={{flex:1,textAlign:“center”,fontFamily:“Cinzel,serif”,fontSize:10,letterSpacing:3,color:“rgba(212,175,55,.3)”}}>{label}</div>
 )}
 <button className=“fb-nav-btn” disabled={current===total-1||animating} onClick={()=>goTo(current+1)}>›</button>
 </div>
@@ -420,7 +400,8 @@ useEffect(()=>{ load(); },[]);
 
 async function load() {
 try {
-const _ks = Object.keys(localStorage).filter(k=>k.startsWith(“pbstory:”)); const res = {keys: _ks};
+const _ks = Object.keys(localStorage).filter(k=>k.startsWith(“pbstory:”));
+const res = {keys: _ks};
 if (!res.keys.length){ setStorageStories([]); return; }
 const all = await Promise.all(res.keys.map(async k=>{
 try{
@@ -462,7 +443,7 @@ return (
 <button className="hero-btn" onClick={onNewStory}><span style={{fontSize:17}}>✨</span> Craft a New Story</button>
 </div>
 {stories===null ? (
-<div style={{textAlign:“center”,padding:“60px”,fontFamily:”‘Cinzel’,serif”,fontSize:11,letterSpacing:4,color:“rgba(212,175,55,.3)”}}>✦ Opening the Library ✦</div>
+<div style={{textAlign:“center”,padding:“60px”,fontFamily:“Cinzel,serif”,fontSize:11,letterSpacing:4,color:“rgba(212,175,55,.3)”}}>✦ Opening the Library ✦</div>
 ) : (
 <>
 <div className="lib-header">
@@ -537,7 +518,7 @@ return (
 <>
 <div className="pbs">
 {LABELS.map((lbl,i)=>(
-<div key={i} className={“pbs-item “ + (i===step?“active”:””) + “ “ + (i<step?“done”:””)}>
+<div key={i} className={“pbs-item “+(i===step?“active”:””)+” “+(i<step?“done”:””)}>
 <div className="pbs-dot">{i<step?“✓”:i+1}</div>
 <div className="pbs-lbl">{lbl}</div>
 </div>
@@ -547,11 +528,11 @@ return (
 {step===0&&<div>
 <div className="pbt">🌟 Choose Your Scenes</div>
 <div className="pbhint">Pick the magical places your story will visit</div>
-<div className=“pbhint” style={{marginTop:’-16px’,fontSize:12,color:‘rgba(232,213,183,.4)’}}>Don’t worry about the order, you can switch them up later.</div>
-<div className="pbbadge">{selectedImages.length===0?“No scenes chosen yet”:“✦ “ + selectedImages.length + “ scene” + (selectedImages.length>1?“s”:””) + “ chosen ✦”}</div>
+<div className=“pbhint” style={{marginTop:”-16px”,fontSize:12,color:“rgba(232,213,183,.4)”}}>Don’t worry about the order, you can switch them up later.</div>
+<div className="pbbadge">{selectedImages.length===0?“No scenes chosen yet”:“✦ “+selectedImages.length+” scene”+(selectedImages.length>1?“s”:””)+” chosen ✦”}</div>
 <div className="pbgrid">
 {STORY_IMAGES.map(img=>(
-<div key={img.id} className={“pbimg-card “ + (isSel(img.id)?“sel”:””)} onClick={()=>toggleImage(img)}>
+<div key={img.id} className={“pbimg-card “+(isSel(img.id)?“sel”:””)} onClick={()=>toggleImage(img)}>
 <img src={img.src} alt={img.label}/>
 {isSel(img.id)&&<div className="pbcheck">✓</div>}
 </div>
@@ -572,12 +553,12 @@ return (
 <div key={img.id} className="pbai">
 <img src={img.src} alt={img.label} className=“pbath” style={{boxShadow:isCover?“0 0 0 2px #d4af37”:undefined}}/>
 <div className="pbai-info">
-<div className="pbai-prev">{pages[img.id]?’”’+ pages[img.id].slice(0,65)+(pages[img.id].length>65?”…”:””) +’”’:“No text yet”}</div>
+<div className="pbai-prev">{pages[img.id]?’”’+pages[img.id].slice(0,65)+(pages[img.id].length>65?”…”:””)+’”’:“No text yet”}</div>
 </div>
-<button className={“pbcover-btn” + (isCover?” active”:””)} onClick={()=>setCoverImageId(img.id)} title=“Set as cover”>
+<button className={“pbcover-btn”+(isCover?” active”:””)} onClick={()=>setCoverImageId(img.id)} title=“Set as cover”>
 {isCover?“★ Cover”:“☆ Cover”}
 </button>
-<div style={{fontFamily:”‘Cinzel’,serif”,fontSize:11,color:“rgba(212,175,55,.45)”,paddingRight:4}}>{idx+1}</div>
+<div style={{fontFamily:“Cinzel,serif”,fontSize:11,color:“rgba(212,175,55,.45)”,paddingRight:4}}>{idx+1}</div>
 <div className="pbarr">
 <button className=“pbarr-btn” disabled={idx===0} onClick={()=>move(idx,idx-1)}>▲</button>
 <button className=“pbarr-btn” disabled={idx===selectedImages.length-1} onClick={()=>move(idx,idx+1)}>▼</button>
@@ -622,7 +603,7 @@ return (
 <label className="pblbl">Written by</label>
 <input className=“pbsub” type=“text” placeholder=“Your name…” value={authorName} onChange={e=>setAuthorName(e.target.value)}/>
 </div>
-{saveError&&<div style={{background:“rgba(200,80,80,.1)”,border:“1px solid rgba(200,80,80,.3)”,borderRadius:9,padding:“12px 16px”,margin:“16px auto”,maxWidth:520,fontFamily:”‘Cinzel’,serif”,fontSize:11,color:“rgba(220,120,120,.9)”,textAlign:“center”}}>⚠ {saveError}</div>}
+{saveError&&<div style={{background:“rgba(200,80,80,.1)”,border:“1px solid rgba(200,80,80,.3)”,borderRadius:9,padding:“12px 16px”,margin:“16px auto”,maxWidth:520,fontFamily:“Cinzel,serif”,fontSize:11,color:“rgba(220,120,120,.9)”,textAlign:“center”}}>⚠ {saveError}</div>}
 <div className="pb-row">
 <button className=“pb-btn-s” onClick={()=>setStep(2)}>← Back</button>
 {storyReady
