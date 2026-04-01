@@ -207,6 +207,7 @@ const CSS = `
 .fb{display:none!important}
 .pb-print-cover{page-break-after:always}
 .pb-print-page{page-break-after:always;page-break-inside:avoid}
+.pb-print-wrap > div{page-break-inside:avoid}
 }
 @media(max-width:767px){
 .pbgrid{grid-template-columns:repeat(2,1fr)}
@@ -250,7 +251,7 @@ return () => clearTimeout(timer);
 
 return (
 <div className=“pb-print-wrap” style={{position:“absolute”,left:”-9999px”,top:0,width:“210mm”,background:“white”,fontFamily:“Georgia,serif”}}>
-<div style={{minHeight:“100vh”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,padding:“60px 40px”,pageBreakAfter:“always”}}>
+<div style={{display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,padding:“60px 40px”,pageBreakAfter:“always”,minHeight:“auto”}}>
 <h1 style={{fontSize:36,color:”#2d1b69”,marginBottom:12}}>{story.storyTitle || “My Story”}</h1>
 <hr style={{width:80,border:“1px solid #d4af37”,margin:“16px auto”}}/>
 {story.authorName && <p style={{fontSize:18,color:”#666”,fontStyle:“italic”}}>{story.authorName}</p>}
@@ -265,7 +266,7 @@ return (
 </div>
 );
 })}
-<div style={{minHeight:“60vh”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,background:“white”}}>
+<div style={{minHeight:“auto”,padding:“60px 40px”,display:“flex”,flexDirection:“column”,alignItems:“center”,justifyContent:“center”,textAlign:“center”,background:“white”}}>
 <h2 style={{fontSize:48,color:”#2d1b69”,letterSpacing:8}}>The End</h2>
 <p style={{fontSize:13,color:”#aaa”,marginTop:12,letterSpacing:3}}>{”* “+(story.storyTitle||””)+” *”}</p>
 </div>
