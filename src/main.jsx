@@ -242,6 +242,8 @@ const imgs = (story && story.selectedImages) || [];
 
 useEffect(() => {
 if (!story) return;
+// Small delay to ensure DOM is painted
+const mountTimer = setTimeout(function() {
 const printWrap = document.querySelector(”.pb-print-wrap”);
 const app = document.querySelector(”.pb”);
 
@@ -287,17 +289,20 @@ function cleanup() {
 const fallback = setTimeout(cleanup, 15000);
 window.addEventListener("afterprint", function() { clearTimeout(fallback); cleanup(); }, { once: true });
 
+}, 100); // end mountTimer
 return function() {
-  clearTimeout(fallback);
-  if (app) app.style.display = "";
-  if (printWrap) {
-    printWrap.style.visibility = "hidden";
-    printWrap.style.position = "absolute";
+  clearTimeout(mountTimer);
+  const pw = document.querySelector(".pb-print-wrap");
+  const ap = document.querySelector(".pb");
+  if (ap) ap.style.display = "";
+  if (pw) {
+    pw.style.visibility = "hidden";
+    pw.style.position = "absolute";
   }
 };
 ```
 
-}, []);
+}, [story]);
 
 if (!story) return <div className=“pb-print-wrap” style={{display:“none”}}></div>;
 
