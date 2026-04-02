@@ -242,63 +242,58 @@ const imgs = (story && story.selectedImages) || [];
 
 useEffect(() => {
 if (!story) return;
-// Small delay to ensure DOM is painted
-const mountTimer = setTimeout(function() {
-const printWrap = document.querySelector(”.pb-print-wrap”);
-const app = document.querySelector(”.pb”);
 
 ```
+var printWrap = document.querySelector(".pb-print-wrap");
+var app = document.querySelector(".pb");
+
 if (printWrap) {
   printWrap.style.visibility = "visible";
   printWrap.style.position = "static";
 }
 if (app) app.style.display = "none";
-
 if (printWrap) { void printWrap.offsetHeight; }
 
-const images = printWrap ? Array.from(printWrap.querySelectorAll("img")) : [];
-let loaded = 0;
+var images = printWrap ? Array.from(printWrap.querySelectorAll("img")) : [];
+var loaded = 0;
+var fallbackTimer;
 
-function tryPrint() {
-  loaded++;
-  if (loaded >= images.length) window.print();
-}
+var doCleanup = function() {
+  clearTimeout(fallbackTimer);
+  var pw = document.querySelector(".pb-print-wrap");
+  var ap = document.querySelector(".pb");
+  if (ap) ap.style.display = "";
+  if (pw) { pw.style.visibility = "hidden"; pw.style.position = "absolute"; }
+  onClose();
+};
+
+var doPrint = function() {
+  window.print();
+  fallbackTimer = setTimeout(doCleanup, 15000);
+  window.addEventListener("afterprint", doCleanup, { once: true });
+};
 
 if (images.length === 0) {
-  setTimeout(function() { window.print(); }, 200);
+  setTimeout(doPrint, 200);
 } else {
+  var tryPrint = function() {
+    loaded++;
+    if (loaded >= images.length) doPrint();
+  };
   images.forEach(function(img) {
-    if (img.complete) {
-      tryPrint();
-    } else {
+    if (img.complete) { tryPrint(); }
+    else {
       img.addEventListener("load", tryPrint);
       img.addEventListener("error", tryPrint);
     }
   });
 }
 
-function cleanup() {
-  if (app) app.style.display = "";
-  if (printWrap) {
-    printWrap.style.visibility = "hidden";
-    printWrap.style.position = "absolute";
-  }
-  onClose();
-}
-
-const fallback = setTimeout(cleanup, 15000);
-window.addEventListener("afterprint", function() { clearTimeout(fallback); cleanup(); }, { once: true });
-
-}, 100); // end mountTimer
 return function() {
-  clearTimeout(mountTimer);
-  const pw = document.querySelector(".pb-print-wrap");
-  const ap = document.querySelector(".pb");
+  var pw = document.querySelector(".pb-print-wrap");
+  var ap = document.querySelector(".pb");
   if (ap) ap.style.display = "";
-  if (pw) {
-    pw.style.visibility = "hidden";
-    pw.style.position = "absolute";
-  }
+  if (pw) { pw.style.visibility = "hidden"; pw.style.position = "absolute"; }
 };
 ```
 
