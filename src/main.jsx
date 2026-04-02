@@ -299,6 +299,8 @@ return function() {
 
 }, []);
 
+if (!story) return <div className=“pb-print-wrap” style={{display:“none”}}></div>;
+
 return (
 <div className=“pb-print-wrap” style={{visibility:“hidden”,position:“absolute”,top:0,left:0,width:“100%”,background:“white”,fontFamily:“Georgia,serif”}}>
 <div style={{padding:“60px 40px”,textAlign:“center”,pageBreakAfter:“always”}}>
