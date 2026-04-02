@@ -202,9 +202,9 @@ const CSS = `
 .fb-story-text{font-size:19px}
 }
 @media print{
-.pb-print-wrap{position:static!important;left:0!important;display:block!important;width:100%!important}
-.pb{display:none!important}
-.fb{display:none!important}
+body *{visibility:hidden!important}
+.pb-print-wrap,.pb-print-wrap *{visibility:visible!important}
+.pb-print-wrap{position:static!important;left:0!important;width:100%!important}
 .pb-print-cover{page-break-after:always}
 .pb-print-page{page-break-after:always;page-break-inside:avoid}
 .pb-print-wrap > div{page-break-inside:avoid}
@@ -241,20 +241,28 @@ function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
 
 useEffect(() => {
-window.scrollTo(0, 0);
-const images = Array.from(document.querySelectorAll(”.pb-print-wrap img”));
-let loaded = 0;
+const printWrap = document.querySelector(”.pb-print-wrap”);
+const app = document.querySelector(”.pb”);
 
 ```
+if (printWrap) {
+  printWrap.style.visibility = "visible";
+  printWrap.style.position = "static";
+}
+if (app) app.style.display = "none";
+
+if (printWrap) { void printWrap.offsetHeight; }
+
+const images = printWrap ? Array.from(printWrap.querySelectorAll("img")) : [];
+let loaded = 0;
+
 function tryPrint() {
   loaded++;
-  if (loaded >= images.length) {
-    window.print();
-  }
+  if (loaded >= images.length) window.print();
 }
 
 if (images.length === 0) {
-  setTimeout(function() { window.print(); }, 300);
+  setTimeout(function() { window.print(); }, 200);
 } else {
   images.forEach(function(img) {
     if (img.complete) {
@@ -266,15 +274,32 @@ if (images.length === 0) {
   });
 }
 
-const fallback = setTimeout(onClose, 15000);
-window.addEventListener("afterprint", function() { clearTimeout(fallback); onClose(); }, { once: true });
-return function() { clearTimeout(fallback); };
+function cleanup() {
+  if (app) app.style.display = "";
+  if (printWrap) {
+    printWrap.style.visibility = "hidden";
+    printWrap.style.position = "absolute";
+  }
+  onClose();
+}
+
+const fallback = setTimeout(cleanup, 15000);
+window.addEventListener("afterprint", function() { clearTimeout(fallback); cleanup(); }, { once: true });
+
+return function() {
+  clearTimeout(fallback);
+  if (app) app.style.display = "";
+  if (printWrap) {
+    printWrap.style.visibility = "hidden";
+    printWrap.style.position = "absolute";
+  }
+};
 ```
 
 }, []);
 
 return (
-<div className=“pb-print-wrap” style={{position:“absolute”,top:0,left:0,width:“100%”,zIndex:99999,background:“white”,fontFamily:“Georgia,serif”}}>
+<div className=“pb-print-wrap” style={{visibility:“hidden”,position:“absolute”,top:0,left:0,width:“100%”,background:“white”,fontFamily:“Georgia,serif”}}>
 <div style={{padding:“60px 40px”,textAlign:“center”,pageBreakAfter:“always”}}>
 <h1 style={{fontSize:36,color:”#2d1b69”,marginBottom:12}}>{story.storyTitle || “My Story”}</h1>
 <hr style={{width:80,border:“1px solid #d4af37”,margin:“16px auto”}}/>
