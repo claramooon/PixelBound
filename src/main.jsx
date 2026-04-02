@@ -274,19 +274,16 @@ var css = [
 var html = “<!DOCTYPE html><html><head><meta charset='UTF-8'/>”;
 html += “<title>” + (story.storyTitle||“My Story”) + “</title>”;
 html += “<style>” + css + “</style></head><body>”;
-html += “<div style='display:flex;gap:12px;justify-content:center;margin-bottom:30px'>”;html += “<button class='btn' onclick='window.print()'>Print or Save as PDF</button>”;html += “<button class='btn-back' onclick='window.close()'>← Back to App</button>”;html += “</div>”;
+html += “<div style='display:flex;gap:12px;justify-content:center;margin-bottom:30px'>”;html += “<button class='btn' onclick='window.print()'>Print or Save as PDF</button>”;html += “<button class='btn-back' onclick='window.close()'>Back to App</button>”;html += “</div>”;
 html += “<div class='cover'><h1>” + (story.storyTitle||“My Story”) + “</h1>”;
 html += coverImgTag + author + “<p class='date'>” + date + “</p></div>”;
 html += pageHTML;
 html += “<div class='ending'><h2>The End</h2><p>* “ + (story.storyTitle||””) + “ *</p></div>”;
 html += “</body></html>”;
 
-var w = window.open(””, “_blank”);
-if (w) {
-w.document.open();
-w.document.write(html);
-w.document.close();
-}
+var blob = new Blob([html], {type: “text/html”});
+var url = URL.createObjectURL(blob);
+window.open(url, “_blank”);
 }
 
 function PrintBook({ story, onClose }) {
