@@ -193,7 +193,7 @@ const CSS = `
 .hero-btn{padding:20px 52px;font-size:14px}
 .fb-img{flex:0 0 42%;object-fit:contain;background:#06040f}
 .fb-story-text{font-size:18px}
-.pbpages{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.pbpages{display:flex;flex-direction:column;gap:18px}
 .pbcard{padding:44px}
 }
 @media(min-width:768px) and (orientation:landscape){
