@@ -241,6 +241,7 @@ function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
 
 useEffect(() => {
+window.scrollTo(0, 0);
 const images = Array.from(document.querySelectorAll(”.pb-print-wrap img”));
 let loaded = 0;
 
@@ -273,7 +274,7 @@ return function() { clearTimeout(fallback); };
 }, []);
 
 return (
-<div className=“pb-print-wrap” style={{position:“fixed”,inset:0,zIndex:99999,background:“white”,overflowY:“auto”,fontFamily:“Georgia,serif”}}>
+<div className=“pb-print-wrap” style={{position:“absolute”,top:0,left:0,width:“100%”,zIndex:99999,background:“white”,fontFamily:“Georgia,serif”}}>
 <div style={{padding:“60px 40px”,textAlign:“center”,pageBreakAfter:“always”}}>
 <h1 style={{fontSize:36,color:”#2d1b69”,marginBottom:12}}>{story.storyTitle || “My Story”}</h1>
 <hr style={{width:80,border:“1px solid #d4af37”,margin:“16px auto”}}/>
