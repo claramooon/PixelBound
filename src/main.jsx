@@ -281,8 +281,16 @@ html += pageHTML;
 html += “<div class='ending'><h2>The End</h2><p>* “ + (story.storyTitle||””) + “ *</p></div>”;
 html += “</body></html>”;
 
-var w = window.open(””, “_blank”);
-if (w) { w.document.open(); w.document.write(html); w.document.close(); }
+var blob = new Blob([html], {type: “text/html”});
+var url = URL.createObjectURL(blob);
+var a = document.createElement(“a”);
+a.href = url;
+a.target = “_blank”;
+a.rel = “noopener”;
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
 }
 
 function PrintBook({ story, onClose }) {
