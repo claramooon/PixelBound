@@ -241,29 +241,19 @@ function PrintBook({ story, onClose }) {
 const imgs = story.selectedImages || [];
 
 useEffect(() => {
-const printWrap = document.querySelector(”.pb-print-wrap”);
-const app = document.querySelector(”.pb”);
-
-```
-if (printWrap) {
-  printWrap.style.visibility = "visible";
-  printWrap.style.position = "static";
-}
-if (app) app.style.display = "none";
-
-// Force reflow so browser paints the wrapper
-if (printWrap) { void printWrap.offsetHeight; }
-
-const images = printWrap ? Array.from(printWrap.querySelectorAll("img")) : [];
+const images = Array.from(document.querySelectorAll(”.pb-print-wrap img”));
 let loaded = 0;
 
+```
 function tryPrint() {
   loaded++;
-  if (loaded >= images.length) window.print();
+  if (loaded >= images.length) {
+    window.print();
+  }
 }
 
 if (images.length === 0) {
-  window.print();
+  setTimeout(function() { window.print(); }, 300);
 } else {
   images.forEach(function(img) {
     if (img.complete) {
@@ -275,32 +265,15 @@ if (images.length === 0) {
   });
 }
 
-function cleanup() {
-  if (app) app.style.display = "";
-  if (printWrap) {
-    printWrap.style.visibility = "hidden";
-    printWrap.style.position = "absolute";
-  }
-  onClose();
-}
-
-const fallback = setTimeout(cleanup, 15000);
-window.addEventListener("afterprint", function() { clearTimeout(fallback); cleanup(); }, { once: true });
-
-return function() {
-  clearTimeout(fallback);
-  if (app) app.style.display = "";
-  if (printWrap) {
-    printWrap.style.visibility = "hidden";
-    printWrap.style.position = "absolute";
-  }
-};
+const fallback = setTimeout(onClose, 15000);
+window.addEventListener("afterprint", function() { clearTimeout(fallback); onClose(); }, { once: true });
+return function() { clearTimeout(fallback); };
 ```
 
 }, []);
 
 return (
-<div className=“pb-print-wrap” style={{visibility:“hidden”,position:“absolute”,top:0,left:0,width:“100%”,background:“white”,fontFamily:“Georgia,serif”}}>
+<div className=“pb-print-wrap” style={{position:“fixed”,inset:0,zIndex:99999,background:“white”,overflowY:“auto”,fontFamily:“Georgia,serif”}}>
 <div style={{padding:“60px 40px”,textAlign:“center”,pageBreakAfter:“always”}}>
 <h1 style={{fontSize:36,color:”#2d1b69”,marginBottom:12}}>{story.storyTitle || “My Story”}</h1>
 <hr style={{width:80,border:“1px solid #d4af37”,margin:“16px auto”}}/>
