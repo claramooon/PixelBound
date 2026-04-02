@@ -330,6 +330,29 @@ window.addEventListener(‘keydown’, h);
 return () => window.removeEventListener(‘keydown’, h);
 }, [current, animating]);
 
+useEffect(() => {
+var touchStartX = 0;
+var touchStartY = 0;
+var onTouchStart = function(e) {
+touchStartX = e.touches[0].clientX;
+touchStartY = e.touches[0].clientY;
+};
+var onTouchEnd = function(e) {
+var dx = e.changedTouches[0].clientX - touchStartX;
+var dy = e.changedTouches[0].clientY - touchStartY;
+if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+if (dx < 0) goTo(current+1);
+else goTo(current-1);
+}
+};
+window.addEventListener(‘touchstart’, onTouchStart);
+window.addEventListener(‘touchend’, onTouchEnd);
+return function() {
+window.removeEventListener(‘touchstart’, onTouchStart);
+window.removeEventListener(‘touchend’, onTouchEnd);
+};
+}, [current, animating]);
+
 function renderPage(pageIdx) {
 if (pageIdx === 0) {
 const coverImg = imgs.find(i=>i.id===story.coverImageId) || imgs[0];
