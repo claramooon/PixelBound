@@ -281,9 +281,8 @@ html += pageHTML;
 html += “<div class='ending'><h2>The End</h2><p>* “ + (story.storyTitle||””) + “ *</p></div>”;
 html += “</body></html>”;
 
-var blob = new Blob([html], {type: “text/html”});
-var url = URL.createObjectURL(blob);
-window.open(url, “_blank”);
+var w = window.open(””, “_blank”);
+if (w) { w.document.open(); w.document.write(html); w.document.close(); }
 }
 
 function PrintBook({ story, onClose }) {
