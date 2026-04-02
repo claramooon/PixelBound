@@ -201,14 +201,7 @@ const CSS = `
 .fb-text-area{flex:1;padding:36px 40px}
 .fb-story-text{font-size:19px}
 }
-@media print{
-body *{visibility:hidden!important}
-.pb-print-wrap,.pb-print-wrap *{visibility:visible!important}
-.pb-print-wrap{position:static!important;left:0!important;width:100%!important}
-.pb-print-cover{page-break-after:always}
-.pb-print-page{page-break-after:always;page-break-inside:avoid}
-.pb-print-wrap > div{page-break-inside:avoid}
-}
+
 @media(max-width:767px){
 .pbgrid{grid-template-columns:repeat(2,1fr)}
 .pbpb{flex-direction:column}
@@ -237,93 +230,70 @@ function fmtDate(ts) {
 return new Date(ts).toLocaleDateString(“en-US”,{month:“short”,day:“numeric”,year:“numeric”});
 }
 
-function PrintBook({ story, onClose }) {
-const imgs = (story && story.selectedImages) || [];
+function openPrintPage(story) {
+var imgs = story.selectedImages || [];
+var pages = imgs.map(function(img, idx) {
+var text = (story.pages || {})[img.id] || “”;
+return (
+“<div class="page">” +
+“<img src="” + img.src + “" />” +
+“<div class="text">” + text.replace(/\n/g, “<br/>”) + “</div>” +
+“<div class="num">- “ + (idx+1) + “ -</div>” +
+“</div>”
+);
+}).join(””);
 
+var date = new Date(story.createdAt).toLocaleDateString(“en-US”,{month:“long”,day:“numeric”,year:“numeric”});
+var author = story.authorName ? “<p class="author">by “ + story.authorName + “</p>” : “”;
+
+var html = “<!DOCTYPE html><html><head><meta charset="UTF-8"/>” +
+“<meta name="viewport" content="width=device-width,initial-scale=1"/>” +
+“<title>” + (story.storyTitle||“My Story”) + “</title>” +
+“<style>” +
+“*{box-sizing:border-box;margin:0;padding:0}” +
+“body{font-family:Georgia,serif;background:white;color:#222;padding:20px}” +
+“.print-btn{display:block;margin:0 auto 30px;padding:14px 32px;background:#2d1b69;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer;font-family:Georgia,serif}” +
+“.print-btn:hover{background:#3d2b89}” +
+“@media print{.print-btn{display:none}}” +
+“.cover{text-align:center;padding:80px 40px;border-bottom:2px solid #d4af37;margin-bottom:40px}” +
+“.cover h1{font-size:36px;color:#2d1b69;margin-bottom:16px}” +
+“.cover hr{width:80px;border:1px solid #d4af37;margin:16px auto}” +
+“.author{font-size:18px;color:#666;font-style:italic;margin-bottom:8px}” +
+“.date{font-size:13px;color:#aaa}” +
+“.page{margin-bottom:60px;page-break-inside:avoid;page-break-after:always}” +
+“.page img{width:100%;max-height:400px;object-fit:contain;display:block;background:#f9f9f9;border-radius:4px}” +
+“.text{padding:20px 0;font-size:17px;line-height:1.8;text-align:center}” +
+“.num{text-align:center;font-size:11px;color:#aaa;padding-bottom:20px}” +
+“.ending{text-align:center;padding:60px 40px;page-break-before:always}” +
+“.ending h2{font-size:42px;color:#2d1b69;letter-spacing:6px;margin-bottom:12px}” +
+“.ending p{font-size:13px;color:#aaa;letter-spacing:3px}” +
+“</style></head><body>” +
+“<button class="print-btn" onclick="window.print()">🖨️ Print or Save as PDF</button>” +
+“<div class="cover">” +
+“<h1>” + (story.storyTitle||“My Story”) + “</h1>” +
+“<hr/>” + author +
+“<p class="date">” + date + “</p>” +
+“</div>” +
+pages +
+“<div class="ending"><h2>The End</h2><p>* “ + (story.storyTitle||””) + “ *</p></div>” +
+“</body></html>”;
+
+var w = window.open(””, “_blank”);
+if (w) {
+w.document.open();
+w.document.write(html);
+w.document.close();
+}
+}
+
+function PrintBook({ story, onClose }) {
 useEffect(() => {
 if (!story) return;
-
-```
-var printWrap = document.querySelector(".pb-print-wrap");
-var app = document.querySelector(".pb");
-
-if (printWrap) {
-  printWrap.style.visibility = "visible";
-  printWrap.style.position = "static";
-}
-if (app) app.style.display = "none";
-if (printWrap) { void printWrap.offsetHeight; }
-
-var images = printWrap ? Array.from(printWrap.querySelectorAll("img")) : [];
-var loaded = 0;
-var fallbackTimer;
-
-var doCleanup = function() {
-  clearTimeout(fallbackTimer);
-  var pw = document.querySelector(".pb-print-wrap");
-  var ap = document.querySelector(".pb");
-  if (ap) ap.style.display = "";
-  if (pw) { pw.style.visibility = "hidden"; pw.style.position = "absolute"; }
-  onClose();
-};
-
-var doPrint = function() {
-  window.print();
-  fallbackTimer = setTimeout(doCleanup, 15000);
-  window.addEventListener("afterprint", doCleanup, { once: true });
-};
-
-if (images.length === 0) {
-  setTimeout(doPrint, 200);
-} else {
-  var tryPrint = function() {
-    loaded++;
-    if (loaded >= images.length) doPrint();
-  };
-  images.forEach(function(img) {
-    if (img.complete) { tryPrint(); }
-    else {
-      img.addEventListener("load", tryPrint);
-      img.addEventListener("error", tryPrint);
-    }
-  });
-}
-
-return function() {
-  var pw = document.querySelector(".pb-print-wrap");
-  var ap = document.querySelector(".pb");
-  if (ap) ap.style.display = "";
-  if (pw) { pw.style.visibility = "hidden"; pw.style.position = "absolute"; }
-};
-```
-
+openPrintPage(story);
+onClose();
 }, [story]);
 
-if (!story) return <div className=“pb-print-wrap” style={{display:“none”}}></div>;
-
-return (
-<div className=“pb-print-wrap” style={{visibility:“hidden”,position:“absolute”,top:0,left:0,width:“100%”,background:“white”,fontFamily:“Georgia,serif”}}>
-<div style={{padding:“60px 40px”,textAlign:“center”,pageBreakAfter:“always”}}>
-<h1 style={{fontSize:36,color:”#2d1b69”,marginBottom:12}}>{story.storyTitle || “My Story”}</h1>
-<hr style={{width:80,border:“1px solid #d4af37”,margin:“16px auto”}}/>
-{story.authorName && <p style={{fontSize:18,color:”#666”,fontStyle:“italic”}}>{story.authorName}</p>}
-<p style={{fontSize:13,color:”#aaa”,marginTop:16}}>{new Date(story.createdAt).toLocaleDateString(“en-US”,{month:“long”,day:“numeric”,year:“numeric”})}</p>
-</div>
-{imgs.map(function(img, idx) {
-return (
-<div key={img.id} style={{background:“white”,pageBreakAfter:“always”,pageBreakInside:“avoid”}}>
-<img src={img.src} alt=”” style={{width:“100%”,height:“50vh”,objectFit:“contain”,display:“block”,background:”#f9f9f9”}}/>
-<div style={{padding:“20px 32px”,fontSize:16,lineHeight:1.8,color:”#222”,textAlign:“center”}}>{(story.pages||{})[img.id]||””}</div>
-<div style={{textAlign:“center”,fontSize:10,color:”#aaa”,padding:8}}>{”- “+(idx+1)+” -”}</div>
-</div>
-);
-})}
-<div style={{padding:“60px 40px”,textAlign:“center”,background:“white”}}>
-<h2 style={{fontSize:48,color:”#2d1b69”,letterSpacing:8}}>The End</h2>
-<p style={{fontSize:13,color:”#aaa”,marginTop:12,letterSpacing:3}}>{”* “+(story.storyTitle||””)+” *”}</p>
-</div>
-</div>
-);
+return null;
 }
 
 function FlipBook({ story, onClose, onPrint }) {
@@ -689,7 +659,7 @@ setSessionStories(prev=>prev.filter(s=>s.createdAt!==createdAt));
 return (
 <>
 <style>{CSS}</style>
-<PrintBook story={printing} onClose={()=>setPrinting(null)}/>
+{printing&&<PrintBook story={printing} onClose={()=>setPrinting(null)}/> }
 {reading&&activeStory&&<FlipBook story={activeStory} onClose={()=>setReading(false)} onPrint={()=>{setReading(false);setPrinting(activeStory);}}/>}
 <div className="pb">
 <header className="pbh">
