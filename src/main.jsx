@@ -252,7 +252,7 @@ var css = [
 “body{font-family:Georgia,serif;background:white;color:#222;padding:20px}”,
 “.btn{display:block;margin:0 auto 30px;padding:14px 32px;background:#2d1b69;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer;font-family:Georgia,serif}”,
 “@media print{.btn{display:none}}”,
-“.cover{text-align:center;padding:80px 40px;border-bottom:2px solid #d4af37;margin-bottom:40px}”,
+“.cover{text-align:center;padding:200px 40px;border-bottom:2px solid #d4af37;margin-bottom:40px;page-break-after:always}”,
 “.cover h1{font-size:36px;color:#2d1b69;margin-bottom:16px}”,
 “.cover hr{width:80px;border:1px solid #d4af37;margin:16px auto}”,
 “.author{font-size:18px;color:#666;font-style:italic;margin-bottom:8px}”,
