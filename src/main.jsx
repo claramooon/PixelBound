@@ -232,51 +232,49 @@ return new Date(ts).toLocaleDateString(“en-US”,{month:“short”,day:“num
 
 function openPrintPage(story) {
 var imgs = story.selectedImages || [];
-var pages = imgs.map(function(img, idx) {
-var text = (story.pages || {})[img.id] || “”;
-return (
-“<div class="page">” +
-“<img src="” + img.src + “" />” +
-“<div class="text">” + text.replace(/\n/g, “<br/>”) + “</div>” +
-“<div class="num">- “ + (idx+1) + “ -</div>” +
-“</div>”
-);
-}).join(””);
-
 var date = new Date(story.createdAt).toLocaleDateString(“en-US”,{month:“long”,day:“numeric”,year:“numeric”});
-var author = story.authorName ? “<p class="author">by “ + story.authorName + “</p>” : “”;
+var author = story.authorName ? “<p class='author'>by “ + story.authorName + “</p>” : “”;
 
-var html = “<!DOCTYPE html><html><head><meta charset="UTF-8"/>” +
-“<meta name="viewport" content="width=device-width,initial-scale=1"/>” +
-“<title>” + (story.storyTitle||“My Story”) + “</title>” +
-“<style>” +
-“*{box-sizing:border-box;margin:0;padding:0}” +
-“body{font-family:Georgia,serif;background:white;color:#222;padding:20px}” +
-“.print-btn{display:block;margin:0 auto 30px;padding:14px 32px;background:#2d1b69;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer;font-family:Georgia,serif}” +
-“.print-btn:hover{background:#3d2b89}” +
-“@media print{.print-btn{display:none}}” +
-“.cover{text-align:center;padding:80px 40px;border-bottom:2px solid #d4af37;margin-bottom:40px}” +
-“.cover h1{font-size:36px;color:#2d1b69;margin-bottom:16px}” +
-“.cover hr{width:80px;border:1px solid #d4af37;margin:16px auto}” +
-“.author{font-size:18px;color:#666;font-style:italic;margin-bottom:8px}” +
-“.date{font-size:13px;color:#aaa}” +
-“.page{margin-bottom:60px;page-break-inside:avoid;page-break-after:always}” +
-“.page img{width:100%;max-height:400px;object-fit:contain;display:block;background:#f9f9f9;border-radius:4px}” +
-“.text{padding:20px 0;font-size:17px;line-height:1.8;text-align:center}” +
-“.num{text-align:center;font-size:11px;color:#aaa;padding-bottom:20px}” +
-“.ending{text-align:center;padding:60px 40px;page-break-before:always}” +
-“.ending h2{font-size:42px;color:#2d1b69;letter-spacing:6px;margin-bottom:12px}” +
-“.ending p{font-size:13px;color:#aaa;letter-spacing:3px}” +
-“</style></head><body>” +
-“<button class="print-btn" onclick="window.print()">🖨️ Print or Save as PDF</button>” +
-“<div class="cover">” +
-“<h1>” + (story.storyTitle||“My Story”) + “</h1>” +
-“<hr/>” + author +
-“<p class="date">” + date + “</p>” +
-“</div>” +
-pages +
-“<div class="ending"><h2>The End</h2><p>* “ + (story.storyTitle||””) + “ *</p></div>” +
-“</body></html>”;
+var pageHTML = “”;
+for (var i = 0; i < imgs.length; i++) {
+var img = imgs[i];
+var text = (story.pages || {})[img.id] || “”;
+text = text.split(”\n”).join(”<br/>”);
+pageHTML += “<div class='page'>”;
+pageHTML += “<img src='" + img.src + "' />”;
+pageHTML += “<div class='text'>” + text + “</div>”;
+pageHTML += “<div class='num'>- “ + (i+1) + “ -</div>”;
+pageHTML += “</div>”;
+}
+
+var css = [
+“*{box-sizing:border-box;margin:0;padding:0}”,
+“body{font-family:Georgia,serif;background:white;color:#222;padding:20px}”,
+“.btn{display:block;margin:0 auto 30px;padding:14px 32px;background:#2d1b69;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer;font-family:Georgia,serif}”,
+“@media print{.btn{display:none}}”,
+“.cover{text-align:center;padding:80px 40px;border-bottom:2px solid #d4af37;margin-bottom:40px}”,
+“.cover h1{font-size:36px;color:#2d1b69;margin-bottom:16px}”,
+“.cover hr{width:80px;border:1px solid #d4af37;margin:16px auto}”,
+“.author{font-size:18px;color:#666;font-style:italic;margin-bottom:8px}”,
+“.date{font-size:13px;color:#aaa}”,
+“.page{margin-bottom:60px;page-break-inside:avoid;page-break-after:always}”,
+“.page img{width:100%;max-height:400px;object-fit:contain;display:block;background:#f9f9f9}”,
+“.text{padding:20px 0;font-size:17px;line-height:1.8;text-align:center}”,
+“.num{text-align:center;font-size:11px;color:#aaa;padding-bottom:20px}”,
+“.ending{text-align:center;padding:60px 40px}”,
+“.ending h2{font-size:42px;color:#2d1b69;letter-spacing:6px;margin-bottom:12px}”,
+“.ending p{font-size:13px;color:#aaa;letter-spacing:3px}”,
+].join(” “);
+
+var html = “<!DOCTYPE html><html><head><meta charset='UTF-8'/>”;
+html += “<title>” + (story.storyTitle||“My Story”) + “</title>”;
+html += “<style>” + css + “</style></head><body>”;
+html += “<button class='btn' onclick='window.print()'>Print or Save as PDF</button>”;
+html += “<div class='cover'><h1>” + (story.storyTitle||“My Story”) + “</h1><hr/>”;
+html += author + “<p class='date'>” + date + “</p></div>”;
+html += pageHTML;
+html += “<div class='ending'><h2>The End</h2><p>* “ + (story.storyTitle||””) + “ *</p></div>”;
+html += “</body></html>”;
 
 var w = window.open(””, “_blank”);
 if (w) {
@@ -292,7 +290,6 @@ if (!story) return;
 openPrintPage(story);
 onClose();
 }, [story]);
-
 return null;
 }
 
