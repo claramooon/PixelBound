@@ -238,9 +238,10 @@ return new Date(ts).toLocaleDateString(“en-US”,{month:“short”,day:“num
 }
 
 function PrintBook({ story, onClose }) {
-const imgs = story.selectedImages || [];
+const imgs = (story && story.selectedImages) || [];
 
 useEffect(() => {
+if (!story) return;
 const printWrap = document.querySelector(”.pb-print-wrap”);
 const app = document.querySelector(”.pb”);
 
@@ -686,7 +687,7 @@ setSessionStories(prev=>prev.filter(s=>s.createdAt!==createdAt));
 return (
 <>
 <style>{CSS}</style>
-{printing&&<PrintBook story={printing} onClose={()=>setPrinting(null)}/>}
+<PrintBook story={printing} onClose={()=>setPrinting(null)}/>
 {reading&&activeStory&&<FlipBook story={activeStory} onClose={()=>setReading(false)} onPrint={()=>{setReading(false);setPrinting(activeStory);}}/>}
 <div className="pb">
 <header className="pbh">
