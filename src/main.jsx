@@ -234,6 +234,8 @@ function openPrintPage(story) {
 var imgs = story.selectedImages || [];
 var date = new Date(story.createdAt).toLocaleDateString(“en-US”,{month:“long”,day:“numeric”,year:“numeric”});
 var author = story.authorName ? “<p class='author'>by “ + story.authorName + “</p>” : “”;
+var coverImg = imgs.find(function(i){return i.id===story.coverImageId;}) || imgs[0];
+var coverImgTag = coverImg ? “<img class='cover-img' src='" + coverImg.src + "'/>” : “”;
 
 var pageHTML = “”;
 for (var i = 0; i < imgs.length; i++) {
@@ -252,7 +254,7 @@ var css = [
 “body{font-family:Georgia,serif;background:white;color:#222;padding:20px}”,
 “.btn{display:block;margin:0 auto 30px;padding:14px 32px;background:#2d1b69;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer;font-family:Georgia,serif}”,
 “@media print{.btn{display:none}}”,
-“.cover{text-align:center;padding:200px 40px;border-bottom:2px solid #d4af37;margin-bottom:40px;page-break-after:always}”,
+“.cover{text-align:center;padding:60px 40px;page-break-after:always;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:90vh}”,”.cover-img{width:100%;max-height:300px;object-fit:contain;margin:24px 0;border-radius:8px}”,
 “.cover h1{font-size:36px;color:#2d1b69;margin-bottom:16px}”,
 “.cover hr{width:80px;border:1px solid #d4af37;margin:16px auto}”,
 “.author{font-size:18px;color:#666;font-style:italic;margin-bottom:8px}”,
@@ -270,8 +272,8 @@ var html = “<!DOCTYPE html><html><head><meta charset='UTF-8'/>”;
 html += “<title>” + (story.storyTitle||“My Story”) + “</title>”;
 html += “<style>” + css + “</style></head><body>”;
 html += “<button class='btn' onclick='window.print()'>Print or Save as PDF</button>”;
-html += “<div class='cover'><h1>” + (story.storyTitle||“My Story”) + “</h1><hr/>”;
-html += author + “<p class='date'>” + date + “</p></div>”;
+html += “<div class='cover'><h1>” + (story.storyTitle||“My Story”) + “</h1>”;
+html += coverImgTag + author + “<p class='date'>” + date + “</p></div>”;
 html += pageHTML;
 html += “<div class='ending'><h2>The End</h2><p>* “ + (story.storyTitle||””) + “ *</p></div>”;
 html += “</body></html>”;
