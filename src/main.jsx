@@ -502,9 +502,7 @@ return (
 {reading&&activeStory&&<FlipBook story={activeStory} onClose={()=>setReading(false)} onPrint={()=>{setReading(false);setPrinting(activeStory);}}/>}
 <div className="pb">
 <header className="pbh">
-{view!==“home”
-?<button className=“pbh-action” onClick={()=>setView(“home”)}>Library</button>
-:<div style={{minWidth:90}}/>}
+<div style={{minWidth:90}}/>
 <div className="pbh-logo">
 <img src=“https://res.cloudinary.com/donmltebd/image/upload/v1774344846/img_5534_aadazm_f1f475” alt=“PixelBound” style={{width:“100%”,height:“auto”,objectFit:“contain”,filter:“drop-shadow(0 0 14px rgba(212,175,55,.4))”}}/>
 <div className="pbh-sub">Craft Your Magical Story</div>
