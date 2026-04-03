@@ -489,7 +489,7 @@ a: “Your stories are saved on this device in your browser. They will be here n
 },
 {
 q: “My story has disappeared – what happened?”,
-a: “Stories are stored on your device, so they can disappear if you clear your browser data, use a different device, or reinstall the app. We always recommend saving a PDF of stories you love.”
+a: “Stories are stored on your device, so they can disappear if you clear your browser data, or if you switch to a different device. We always recommend saving a PDF of stories you love.”
 },
 {
 q: “How do I print my story?”,
