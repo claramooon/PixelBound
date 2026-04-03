@@ -416,7 +416,7 @@ return (
 <div className="pbai-prev">{pages[img.id]?’”’+pages[img.id].slice(0,65)+(pages[img.id].length>65?”…”:””)+’”’:“No text yet”}</div>
 </div>
 <button className={“pbcover-btn”+(isCover?” active”:””)} onClick={()=>setCoverImageId(img.id)} title=“Set as cover”>
-{isCover?“Cover”:“Set Cover”}
+{isCover?“★ Cover”:“☆ Cover”}
 </button>
 <div style={{fontFamily:“Cinzel,serif”,fontSize:11,color:“rgba(212,175,55,.45)”,paddingRight:4}}>{idx+1}</div>
 <div className="pbarr">
