@@ -1,1 +1,16 @@
-
+{
+  "name": "PixelBound",
+  "short_name": "PixelBound",
+  "description": "Craft your magical story",
+  "start_url": "/PixelBound/",
+  "display": "standalone",
+  "background_color": "#0d0a1a",
+  "theme_color": "#d4af37",
+  "icons": [
+    {
+      "src": "/PixelBound/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
