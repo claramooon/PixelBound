@@ -254,7 +254,7 @@ const cls = settled ? “fb-page slide-in” : (dir===‘next’ ? “fb-page en
 return <div className={cls}>{render()}</div>;
 }
 
-function Homepage({ onNewStory, onRead, sessionStories, onDelete, onPrint }) {
+function Homepage({ onNewStory, onRead, sessionStories, onDelete, onPrint, onFaq }) {
 const [storageStories, setStorageStories] = useState(null);
 const [delTarget, setDelTarget] = useState(null);
 useEffect(()=>{ load(); },[]);
@@ -327,6 +327,9 @@ return (
 </div>
 </>
 )}
+<div style={{textAlign:“center”,padding:“40px 0 0”}}>
+<button className="pb-btn-s" style={{fontSize:11,letterSpacing:2}} onClick={onFaq}>? Help and FAQ</button>
+</div>
 {delTarget&&(
 <div className=“overlay” onClick={()=>setDelTarget(null)}>
 <div className=“modal” onClick={e=>e.stopPropagation()}>
@@ -516,6 +519,9 @@ a: “You can choose as many of the 8 weekly scenes as you like! There is no lim
 
 return (
 <div className="faq">
+<div style={{textAlign:“center”,marginBottom:20}}>
+<button className="pb-btn-s" style={{fontSize:11}} onClick={onClose}>Back to Library</button>
+</div>
 <div className="faq-title">✦ Frequently Asked Questions ✦</div>
 <div className="faq-sub">Everything you need to know about PixelBound</div>
 {items.map(function(item, i) {
@@ -564,11 +570,9 @@ return (
 <img src=“https://res.cloudinary.com/donmltebd/image/upload/v1774344846/img_5534_aadazm_f1f475” alt=“PixelBound” style={{width:“100%”,height:“auto”,objectFit:“contain”,filter:“drop-shadow(0 0 14px rgba(212,175,55,.4))”}}/>
 <div className="pbh-sub">Craft Your Magical Story</div>
 </div>
-<div style={{minWidth:90,display:“flex”,justifyContent:“flex-end”}}>
-{view===“home”&&<button className=“pbh-action” onClick={()=>setShowFaq(!showFaq)}>{showFaq?“✕ Close”:”? Help”}</button>}
-</div>
+<div style={{minWidth:90}}/>
 </header>
-{view===“home”&&!showFaq&&<Homepage onNewStory={()=>setView(“builder”)} onRead={s=>{setActiveStory(s);setReading(true);}} sessionStories={sessionStories} onDelete={handleDelete} onPrint={s=>setPrinting(s)}/>}
+{view===“home”&&!showFaq&&<Homepage onNewStory={()=>setView(“builder”)} onRead={s=>{setActiveStory(s);setReading(true);}} sessionStories={sessionStories} onDelete={handleDelete} onPrint={s=>setPrinting(s)} onFaq={()=>setShowFaq(true)}/>}
 {view===“home”&&showFaq&&<FAQ onClose={()=>setShowFaq(false)}/>}
 {view===“builder”&&<Builder onSaved={handleSaved} onCancel={()=>setView(“home”)}/>}
 </div>
