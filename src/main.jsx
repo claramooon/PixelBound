@@ -704,7 +704,7 @@ a: “Hello and welcome to PixelBound! I am Claire, a mum in Scotland who home e
 },
 {
 q: “Support PixelBound”,
-a: “PixelBound is completely free and always will be. If you love it and would like to help keep it going – covering costs like the domain, image hosting, and the time spent curating new scenes every week – you can buy us a coffee! Every little bit is hugely appreciated.”,
+a: “PixelBound is currently completely free! If you love it and would like to help keep it going – covering costs like the domain, image hosting, and the time spent curating new scenes every week – you can buy me a coffee! Every little bit is hugely appreciated.”,
 link: “https://ko-fi.com/pixelboundapp”
 },
 ];
