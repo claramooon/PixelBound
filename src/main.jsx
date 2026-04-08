@@ -702,6 +702,11 @@ a: “You can choose as many of the 8 weekly scenes as you like! There is no lim
 q: “The story behind PixelBound”,
 a: “Hello and welcome to PixelBound! I am Claire, a mum in Scotland who home educates her two children. With a background in all things creative, and a maker of websites since the late 90s, it is my role as a mother that sparked this little project. AI has been an amazing tool in bringing it to life. I do not have time to learn complex coding, but with AI help I have been able to build something I am really proud of – an app that lets children (and adults!) relax and write endless stories, inspired by a fresh set of magical images every week. I will be honest with you – using AI-generated art hurts every creative bone in my body! But PixelBound simply would not exist without it. It would be a dream to commission real artists one day, and I hope to do exactly that as PixelBound grows. For now, the images are simply a springboard – a little spark to set imaginations running wild and the words flowing. I hope you love it as much as we do. Please share it with your friends!”
 },
+{
+q: “Support PixelBound”,
+a: “PixelBound is completely free and always will be. If you love it and would like to help keep it going – covering costs like the domain, image hosting, and the time spent curating new scenes every week – you can buy us a coffee! Every little bit is hugely appreciated.”,
+link: “https://ko-fi.com/pixelboundapp”
+},
 ];
 
 return (
@@ -718,7 +723,7 @@ return (
 <span>{item.q}</span>
 <span className="faq-icon">{open===i?“▲”:“▼”}</span>
 </div>
-{open===i&&<div className="faq-a">{item.a}</div>}
+{open===i&&<div className="faq-a">{item.a}{item.link&&<div style={{marginTop:16}}><a href={item.link} target=”_blank” rel=“noopener noreferrer” style={{display:“inline-block”,background:”#d4af37”,color:”#0d0a1a”,padding:“10px 24px”,borderRadius:8,fontFamily:“Cinzel,serif”,fontSize:12,letterSpacing:1,textDecoration:“none”,fontWeight:700}}>Buy us a Coffee</a></div>}</div>}
 </div>
 );
 })}
