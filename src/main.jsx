@@ -723,7 +723,7 @@ return (
 <span>{item.q}</span>
 <span className="faq-icon">{open===i?“▲”:“▼”}</span>
 </div>
-{open===i&&<div className="faq-a">{item.a}{item.link&&<div style={{marginTop:16}}><a href={item.link} target=”_blank” rel=“noopener noreferrer” style={{display:“inline-block”,background:”#d4af37”,color:”#0d0a1a”,padding:“10px 24px”,borderRadius:8,fontFamily:“Cinzel,serif”,fontSize:12,letterSpacing:1,textDecoration:“none”,fontWeight:700}}>Buy us a Coffee</a></div>}</div>}
+{open===i&&<div className="faq-a">{item.a}{item.link&&<div style={{marginTop:16}}><a href={item.link} target=”_blank” rel=“noopener noreferrer” style={{display:“inline-block”,background:”#d4af37”,color:”#0d0a1a”,padding:“10px 24px”,borderRadius:8,fontFamily:“Cinzel,serif”,fontSize:12,letterSpacing:1,textDecoration:“none”,fontWeight:700}}>Buy me a Coffee</a></div>}</div>}
 </div>
 );
 })}
