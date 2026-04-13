@@ -34,9 +34,9 @@ createdAt: Date.now() - 86400000,
 selectedImages: STORY_IMAGES.slice(0, 4),
 pages: {
 1: “Ben was feeling bored. He had read all his books, and played with all his toys. He needed something new, something exciting...”,
-2: “Then he remembered about PixelBound! "Mum! Can I write a story in PixelBound??" Ben shouted to his mum. "Yes Ben, have fun!" she called back.  Ben was so excited!”,
+2: “Then he remembered about PixelBound! 'Mum! Can I write a story in PixelBound??' Ben shouted to his mum. 'Yes Ben, have fun!' she called back.  Ben was so excited!”,
 3: “Ben opened up PixelBound and felt INSPIRED! The images started to form a story in his mind, and he started to type. The words started to flow...”,
-4: “Ben finished his story.  He printed it out and ran to his mum, "Mum! Mum! Read my story!!" he cried, waving the story at her.  She read the pages, and said "Wow, Ben, well done! I love it, and I love you!”,
+4: “Ben finished his story.  He printed it out and ran to his mum, 'Mum! Mum! Read my story!!' he cried, waving the story at her.  She read the pages, and said 'Wow, Ben, well done! I love it, and I love you!'”,
 }
 };
 
