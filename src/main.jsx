@@ -28,15 +28,15 @@ const STORY_IMAGES = [
 
 const DEMO = {
 _key: “demo”,
-storyTitle: “The Dragon and the Silver Key”,
-authorName: “A Young Adventurer”,
+storyTitle: “Ben Writes A Story”,
+authorName: “PixelBound”,
 createdAt: Date.now() - 86400000,
 selectedImages: STORY_IMAGES.slice(0, 4),
 pages: {
-1: “Deep within the enchanted castle, a brave knight discovered a door that no one had ever managed to open. Behind it, she sensed, lay the greatest secret of the realm.”,
-2: “The magical forest whispered ancient songs as she walked its mossy paths. Every tree had a memory, and every breeze carried a name long forgotten.”,
-3: “The dragon had guarded the silver key for a thousand years, waiting patiently for someone courageous enough – and kind enough – to ask for it properly.”,
-4: “At last the mystical ocean revealed the hidden cove where the treasure had always been. Not gold, not jewels – but the knowledge of how to find your way home.”,
+1: “Ben was feeling bored. He had read all his books, and played with all his toys. He needed something new, something exciting...”,
+2: “Then he remembered about PixelBound! "Mum! Can I write a story in PixelBound??" Ben shouted to his mum. "Yes Ben, have fun!" she called back.  Ben was so excited!”,
+3: “Ben opened up PixelBound and felt INSPIRED! The images started to form a story in his mind, and he started to type. The words started to flow...”,
+4: “Ben finished his story.  He printed it out and ran to his mum, "Mum! Mum! Read my story!!" he cried, waving the story at her.  She read the pages, and said "Wow, Ben, well done! I love it, and I love you!”,
 }
 };
 
