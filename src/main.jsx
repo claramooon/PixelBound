@@ -527,31 +527,31 @@ a: “From the library, tap the Print / Save button on your story card. A print-
 q: “Why are there new pictures every week?”,
 a: “PixelBound refreshes its magical scenes every week so there is always something new to inspire your stories!”
 },
+
+```
 {
-q: “How do I add PixelBound to my home screen?”,
-a: “On iPad or iPhone, open PixelBound in Safari, tap the Share button at the top, then tap Add to Home Screen. PixelBound will appear as an app icon on your device!”
+  q: "Is PixelBound safe for children?",
+  a: "Yes! PixelBound contains no adverts, no sign-ups, and no social features other than the private Facebook group for parents (search for PixelBound Community). Everything stays on your device. It is designed to be a safe, creative space for children of all ages."
 },
 {
-q: “Is PixelBound safe for children?”,
-a: “Yes! PixelBound contains no adverts, no sign-ups, and no social features other than the private Facebook group for parents (search for PixelBound Community). Everything stays on your device. It is designed to be a safe, creative space for children of all ages.”
+  q: "Can I use PixelBound on any device?",
+  a: "PixelBound works best on iPad and iPhone in Safari, but it also works on Android and desktop browsers. For printing, Safari on iPad gives the best results."
 },
 {
-q: “Can I use PixelBound on any device?”,
-a: “PixelBound works best on iPad and iPhone in Safari, but it also works on Android and desktop browsers. For printing, Safari on iPad gives the best results.”
+  q: "How many scenes can I choose for my story?",
+  a: "You can choose as many of the 8 weekly scenes as you like! There is no limit -- though we find 3 to 6 pages makes a lovely story."
 },
 {
-q: “How many scenes can I choose for my story?”,
-a: “You can choose as many of the 8 weekly scenes as you like! There is no limit – though we find 3 to 6 pages makes a lovely story.”
+  q: "The story behind PixelBound",
+  a: "Hello and welcome! I am Claire, a mum in Scotland who home educates her two children. With a background in all things creative, and a maker of websites since the late 90s, it is my role as a mother that sparked this little project. AI has been an amazing tool in bringing it to life. I have been able to build something I am really proud of -- an app that lets children (and adults!) relax and write endless stories, inspired by a fresh set of magical images every week. I will be honest with you -- using AI-generated art hurts every creative bone in my body! But PixelBound simply would not exist without it. It would be a dream to commission real artists one day, and I hope to do exactly that as PixelBound grows. For now, the images are simply a springboard -- a little spark to set imaginations running wild and the words flowing. I hope you love it as much as I do. Please share it with your friends! You can also join a community of PixelBound families on Facebook -- just search for PixelBound Community to find the private group."
 },
 {
-q: “The story behind PixelBound”,
-a: “Hello and welcome! I am Claire, a mum in Scotland who home educates her two children. With a background in all things creative, and a maker of websites since the late 90s, it is my role as a mother that sparked this little project. AI has been an amazing tool in bringing it to life. I have been able to build something I am really proud of – an app that lets children (and adults!) relax and write endless stories, inspired by a fresh set of magical images every week. I will be honest with you – using AI-generated art hurts every creative bone in my body! But PixelBound simply would not exist without it. It would be a dream to commission real artists one day, and I hope to do exactly that as PixelBound grows. For now, the images are simply a springboard – a little spark to set imaginations running wild and the words flowing. I hope you love it as much as I do. Please share it with your friends! You can also join a community of PixelBound families on Facebook – just search for PixelBound Community to find the private group.”
+  q: "Support PixelBound",
+  a: "PixelBound is currently completely free! If you love it and would like to help keep it going -- covering costs like the domain, image hosting, and the time spent curating new scenes every week -- you can buy me a coffee! Every little bit is hugely appreciated.",
+  link: "https://ko-fi.com/pixelboundapp"
 },
-{
-q: “Support PixelBound”,
-a: “PixelBound is currently completely free! If you love it and would like to help keep it going – covering costs like the domain, image hosting, and the time spent curating new scenes every week – you can buy me a coffee! Every little bit is hugely appreciated.”,
-link: “https://ko-fi.com/pixelboundapp”
-},
+```
+
 ];
 
 return (
