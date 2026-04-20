@@ -366,19 +366,10 @@ const [coverImageId,setCoverImageId]=useState(null);
 const [saving,setSaving]=useState(false);
 const [saveError,setSaveError]=useState(null);
 const [storyReady,setStoryReady]=useState(null);
+const [confirmLeave,setConfirmLeave]=useState(false);
 const LABELS=[“Scenes”,“Arrange”,“Write”,“Title”];
 
 useEffect(()=>{ window.scrollTo({top:0,behavior:‘smooth’}); },[step]);
-
-useEffect(() => {
-var handler = function(e) {
-e.preventDefault();
-e.returnValue = “Your story isn’t saved yet – if you leave now you’ll lose your progress. Are you sure?”;
-return e.returnValue;
-};
-window.addEventListener(“beforeunload”, handler);
-return function() { window.removeEventListener(“beforeunload”, handler); };
-}, []);
 
 const toggleImage=img=>setSelectedImages(p=>p.find(i=>i.id===img.id)?p.filter(i=>i.id!==img.id):[…p,img]);
 const isSel=id=>selectedImages.some(i=>i.id===id);
@@ -422,7 +413,7 @@ return (
 ))}
 </div>
 <div className="pb-row">
-<button className="pb-btn-s" onClick={onCancel}>Back to Library</button>
+<button className=“pb-btn-s” onClick={()=>setConfirmLeave(true)}>Back to Library</button>
 <button className=“pb-btn-p” disabled={selectedImages.length===0} onClick={()=>setStep(1)}>Arrange Your Pages</button>
 </div>
 </div>}
@@ -496,6 +487,18 @@ return (
 </div>
 </div>}
 </div>
+{confirmLeave&&(
+<div className=“overlay” onClick={()=>setConfirmLeave(false)}>
+<div className=“modal” onClick={e=>e.stopPropagation()}>
+<div className="modal-title">Leave your story?</div>
+<p className="modal-text">Your story is not saved yet. If you go back now you will lose your progress.</p>
+<div className="modal-btns">
+<button className=“pb-btn-s” style={{padding:“9px 20px”,fontSize:11}} onClick={()=>setConfirmLeave(false)}>Keep Writing</button>
+<button className=“pb-btn-d” style={{padding:“9px 20px”}} onClick={onCancel}>Leave</button>
+</div>
+</div>
+</div>
+)}
 </>
 );
 }
