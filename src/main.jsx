@@ -370,6 +370,16 @@ const LABELS=[“Scenes”,“Arrange”,“Write”,“Title”];
 
 useEffect(()=>{ window.scrollTo({top:0,behavior:‘smooth’}); },[step]);
 
+useEffect(() => {
+var handler = function(e) {
+e.preventDefault();
+e.returnValue = “Your story isn’t saved yet – if you leave now you’ll lose your progress. Are you sure?”;
+return e.returnValue;
+};
+window.addEventListener(“beforeunload”, handler);
+return function() { window.removeEventListener(“beforeunload”, handler); };
+}, []);
+
 const toggleImage=img=>setSelectedImages(p=>p.find(i=>i.id===img.id)?p.filter(i=>i.id!==img.id):[…p,img]);
 const isSel=id=>selectedImages.some(i=>i.id===id);
 const move=(from,to)=>{const a=[…selectedImages];const[x]=a.splice(from,1);a.splice(to,0,x);setSelectedImages(a);};
