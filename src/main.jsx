@@ -286,18 +286,23 @@ setStorageStories(all.filter(Boolean));
 } catch(err) { setStorageStories([]); }
 }
 
+const demoHidden = (() => { try{ return !!localStorage.getItem(“pbdemo_hidden”); }catch{ return false; } })();
 const merged = (() => {
 const base = […(sessionStories||[])];
 const sessionTs = new Set(base.map(s=>s.createdAt));
 (storageStories||[]).forEach(s=>{ if(!sessionTs.has(s.createdAt)) base.push(s); });
 base.sort((a,b)=>b.createdAt-a.createdAt);
-return base.length ? base : [DEMO];
+return demoHidden ? base : […base, DEMO];
 })();
 
 const stories = storageStories === null ? null : merged;
 
 async function doDelete() {
-if (!delTarget || delTarget._key===‘demo’){ setDelTarget(null); return; }
+if (!delTarget){ setDelTarget(null); return; }
+if (delTarget._key===‘demo’) {
+try{ localStorage.setItem(“pbdemo_hidden”,“1”); }catch{}
+setDelTarget(null); load(); return;
+}
 try{ localStorage.removeItem(delTarget._key); }catch{}
 onDelete && onDelete(delTarget.createdAt);
 setDelTarget(null); load();
@@ -330,7 +335,7 @@ return (
 {s._key!==‘demo’&&<button className=“scard-print” onClick={e=>{e.stopPropagation();onPrint&&onPrint(s);}}>Print / Save</button>}
 </div>
 <span className="scard-pages">{(s.selectedImages||[]).length} {(s.selectedImages||[]).length===1?“page”:“pages”}</span>
-{s._key!==‘demo’&&<button className=“scard-del” onClick={e=>{e.stopPropagation();setDelTarget(s);}}>Delete</button>}
+<button className=“scard-del” onClick={e=>{e.stopPropagation();setDelTarget(s);}}>Delete</button>
 </div>
 </div>
 ))}
