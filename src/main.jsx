@@ -399,6 +399,7 @@ onSaved(story);
 
 return (
 <>
+{editingStory&&<div style={{textAlign:“center”,background:“rgba(212,175,55,.1)”,border:“1px solid rgba(212,175,55,.25)”,borderRadius:9,padding:“8px 16px”,margin:“12px 20px 0”,fontFamily:“Cinzel,serif”,fontSize:11,color:“rgba(212,175,55,.8)”,letterSpacing:1}}>Editing: {editingStory.storyTitle}</div>}
 <div className="pbs">
 {LABELS.map((lbl,i)=>(
 <div key={i} className={“pbs-item “+(i===step?“active”:””)+” “+(i<step?“done”:””)}>
