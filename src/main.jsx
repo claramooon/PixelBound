@@ -373,6 +373,7 @@ const [saving,setSaving]=useState(false);
 const [saveError,setSaveError]=useState(null);
 const [storyReady,setStoryReady]=useState(null);
 const [confirmLeave,setConfirmLeave]=useState(false);
+const [previewImg,setPreviewImg]=useState(null);
 const LABELS=[“Scenes”,“Arrange”,“Write”,“Title”];
 
 useEffect(()=>{ window.scrollTo({top:0,behavior:‘smooth’}); },[step]);
@@ -419,6 +420,7 @@ return (
 <div key={img.id} className={“pbimg-card “+(isSel(img.id)?“sel”:””)} onClick={()=>toggleImage(img)}>
 <img src={img.src} alt={img.label}/>
 {isSel(img.id)&&<div className="pbcheck">✓</div>}
+<div onClick={e=>{e.stopPropagation();setPreviewImg(img);}} style={{position:“absolute”,bottom:6,right:6,background:“rgba(0,0,0,.55)”,borderRadius:“50%”,width:24,height:24,display:“flex”,alignItems:“center”,justifyContent:“center”,fontSize:13,cursor:“pointer”}}>🔍</div>
 </div>
 ))}
 </div>
@@ -498,6 +500,17 @@ return (
 </div>
 </div>}
 </div>
+{previewImg&&(
+<div className=“overlay” onClick={()=>setPreviewImg(null)}>
+<div onClick={e=>e.stopPropagation()} style={{position:“relative”,maxWidth:“90vw”,maxHeight:“90vh”}}>
+<img src={previewImg.src} alt={previewImg.label} style={{width:“100%”,maxHeight:“80vh”,objectFit:“contain”,borderRadius:12,display:“block”}}/>
+<div style={{display:“flex”,gap:12,justifyContent:“center”,marginTop:16}}>
+<button className=“pb-btn-p” onClick={()=>{toggleImage(previewImg);setPreviewImg(null);}}>{isSel(previewImg.id)?“Remove from Story”:“Add to Story”}</button>
+<button className=“pb-btn-s” onClick={()=>setPreviewImg(null)}>Close</button>
+</div>
+</div>
+</div>
+)}
 {confirmLeave&&(
 <div className=“overlay” onClick={()=>setConfirmLeave(false)}>
 <div className=“modal” onClick={e=>e.stopPropagation()}>
