@@ -794,7 +794,7 @@ function PixelBound() {
   const [storyImages,setStoryImages]=useState(STORY_IMAGES);
 
   useEffect(() => {
-    fetch("/PixelBound/sets.json")
+    fetch("/sets.json")
       .then(function(r){ return r.json(); })
       .then(function(sets){
         if (sets && sets.length) {
